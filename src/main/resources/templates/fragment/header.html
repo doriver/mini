@@ -1,0 +1,10 @@
+<div style="height: 50px;">
+</div>
+<div>
+  <span th:text="${session.userId}"></span>
+  <span th:text="${session.nickname}"></span>
+  <span th:text="${session.role}"></span>
+  <span th:if="${session.userId == null}"> 세션 없음</span>
+  <button type="button" class="btn btn-secondary"
+          onclick="signOut()">로그아웃</button>
+</div>
