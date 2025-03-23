@@ -3,6 +3,7 @@ package com.ex.mini.user.domain.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -21,4 +22,10 @@ public class User {
     @Enumerated(EnumType.ORDINAL)
     @NotNull
     private Role role;
+
+    @Builder
+    public User(String nickname, Role role) {
+        this.nickname = nickname;
+        this.role = role;
+    }
 }
