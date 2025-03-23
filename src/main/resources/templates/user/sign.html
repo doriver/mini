@@ -22,10 +22,15 @@
         <span th:text="${session.userId}"></span>
         <span th:text="${session.nickname}"></span>
         <span th:text="${session.role}"></span>
+
+        <span th:if="${session.userId == null}"> 세션 없음</span>
     </div>
     <div class="container">
         <div class="row">
-            <div class="col-2"></div>
+            <div class="col-2">
+                <button type="button" class="btn btn-secondary"
+                        onclick="signOut()">로그아웃</button>
+            </div>
             <div class="col-3">
                 <h4>로그인</h4>
                 <input type="text" id="inNickname" class="form-control" placeholder="닉네임">

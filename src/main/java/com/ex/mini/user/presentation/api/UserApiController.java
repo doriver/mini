@@ -2,12 +2,10 @@ package com.ex.mini.user.presentation.api;
 
 import com.ex.mini.user.application.UserSignService;
 import com.ex.mini.user.domain.model.User;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/user")
@@ -44,5 +42,20 @@ public class UserApiController {
             session.setAttribute("role", user.getRole());
         }
         return result;
+    }
+
+    /*
+        로그아웃
+     */
+    @GetMapping("/sign-out")
+    public String signOut(HttpServletRequest request) {
+        // 요청에 담긴 세션ID에 해당하는 세션이 있으면 그 세션 반환
+        // 없으면 생성X, null반환
+        HttpSession session = request.getSession(false);
+
+        if (session != null) {
+            session.invalidate();
+        }
+        return "success";
     }
 }
