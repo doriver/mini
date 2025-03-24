@@ -9,7 +9,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class PostViewController {
 
     @GetMapping("/list")
-    public String postList() {
+    public String postListView() {
         return "post/list";
+    }
+
+    @GetMapping("/add")
+    public String addPostView() {
+        return "post/add";
     }
 }
