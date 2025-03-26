@@ -14,7 +14,18 @@ public class PostViewController {
     }
 
     @GetMapping("/add")
-    public String addPostView() {
+    public String postAddView() {
         return "post/add";
     }
+
+    @GetMapping("/detail")
+    public String postDetailView() {
+        return "post/detail";
+    }
+
+    @GetMapping("/edit")
+    public String postEditView() {
+        return "post/edit";
+    }
+
 }
