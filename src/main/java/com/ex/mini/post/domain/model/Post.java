@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -30,10 +31,18 @@ public class Post {
     @NotBlank
     private String content;
 
-
     @Column(columnDefinition = "TIMESTAMP")
     private LocalDateTime createdAt;
 
     @Column(columnDefinition = "TIMESTAMP")
     private LocalDateTime updatedAt;
+
+    @Builder
+    public Post(User writer, String title, String content, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.writer = writer;
+        this.title = title;
+        this.content = content;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
 }
