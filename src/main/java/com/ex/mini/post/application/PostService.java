@@ -6,9 +6,13 @@ import com.ex.mini.post.presentation.dto.PostCreateDTO;
 import com.ex.mini.user.domain.model.User;
 import com.ex.mini.user.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -32,9 +36,16 @@ public class PostService {
     }
     /*
         글들( 제목, 글쓴이, 작성시간 ... ) 가져오기
-     */
-    public void getPostList() {
 
+        todo
+         일단 컬럼 다 가져오는거로 했는데, 필요한 컬럼만 가져오도록 변경해야함
+     */
+    public List<Post> getPostList(int pageNumber) {
+        Pageable pageable = PageRequest.of(pageNumber, 10);
+        Page<Post> postPage = postRepository.findAll(pageable);
+
+        List<Post> postList = postPage.getContent();
+        return postList;
     }
 
     /*
@@ -46,7 +57,6 @@ public class PostService {
 
     /*
         글 삭제하기
-        글을 조회하고, 거기서 userId값이 같을때 삭제?
      */
     public void removePost(Long postId, Long userId) {
         Post post = postRepository.findById(postId).orElse(null);
