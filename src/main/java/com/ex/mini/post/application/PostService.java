@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -19,9 +20,9 @@ public class PostService {
     /*
         글 저장
      */
-    public void savePost(PostCreateDTO postCreateDTO) {
+    public void savePost(PostCreateDTO postCreateDTO, Long userId) {
 
-        User user = userRepository.findById(postCreateDTO.getUserId()).orElse(null);
+        User user = userRepository.findById(userId).orElse(null);
 
         Post post = Post.builder()
                 .writer(user).title(postCreateDTO.getTitle()).content(postCreateDTO.getContent())
@@ -45,8 +46,14 @@ public class PostService {
 
     /*
         글 삭제하기
+        글을 조회하고, 거기서 userId값이 같을때 삭제?
      */
-    public void removePost() {
+    public void removePost(Long postId, Long userId) {
+        Post post = postRepository.findById(postId).orElse(null);
+
+        if (post.getWriter().getId() == userId) {
+            postRepository.delete(post);
+        }
 
     }
 }
