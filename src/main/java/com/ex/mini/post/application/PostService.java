@@ -2,7 +2,8 @@ package com.ex.mini.post.application;
 
 import com.ex.mini.post.domain.model.Post;
 import com.ex.mini.post.domain.repository.PostRepository;
-import com.ex.mini.post.presentation.dto.PostCreateDTO;
+import com.ex.mini.post.presentation.dto.request.PostCreateDTO;
+import com.ex.mini.post.presentation.dto.response.PostDetailDTO;
 import com.ex.mini.user.domain.model.User;
 import com.ex.mini.user.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -41,7 +41,7 @@ public class PostService {
          일단 컬럼 다 가져오는거로 했는데, 필요한 컬럼만 가져오도록 변경해야함
      */
     public List<Post> getPostList(int pageNumber) {
-        Pageable pageable = PageRequest.of(pageNumber, 10);
+        Pageable pageable = PageRequest.of(pageNumber, 3);
         Page<Post> postPage = postRepository.findAll(pageable);
 
         List<Post> postList = postPage.getContent();
@@ -50,9 +50,17 @@ public class PostService {
 
     /*
         글 가져오기
+        todo
+         댓글등 다른 데이터들 join으로 가져와야함 
      */
-    public void getPost() {
+    public PostDetailDTO getPost(Long postId) {
+        Post post = postRepository.findById(postId).orElse(null);
 
+        PostDetailDTO postDetailDTO = PostDetailDTO.builder()
+                .postId(postId).writer(post.getWriter().getNickname()).title(post.getTitle())
+                .content(post.getContent()).createdAt(post.getCreatedAt()).updatedAt(post.getUpdatedAt())
+                .build();
+        return postDetailDTO;
     }
 
     /*

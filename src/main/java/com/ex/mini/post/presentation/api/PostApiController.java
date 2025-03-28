@@ -1,7 +1,7 @@
 package com.ex.mini.post.presentation.api;
 
 import com.ex.mini.post.application.PostService;
-import com.ex.mini.post.presentation.dto.PostCreateDTO;
+import com.ex.mini.post.presentation.dto.request.PostCreateDTO;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -15,17 +15,18 @@ public class PostApiController {
 
     /*
         글 작성 api
+        글 작성화면 - 등록하기 버튼
      */
     @PostMapping
     public String createPost(@RequestBody PostCreateDTO postCreateDTO, HttpSession session) {
-        Long userId = (Long) session.getAttribute("userId");
+        Long userId = (Long) session.getAttribute("userId"); // 현재 요청한 사용자
         postService.savePost(postCreateDTO, userId);
         return "success";
     }
 
     /*
         글 삭제 api
-        postId만 받으면 되나? userId도 받을수도 있겠지
+        글 상세화면 - 삭제버튼
      */
     @DeleteMapping("/{id}")
     public String deletePost(@PathVariable("id") Long postId, HttpSession session) {

@@ -2,6 +2,7 @@ package com.ex.mini.post.presentation.view;
 
 import com.ex.mini.post.application.PostService;
 import com.ex.mini.post.domain.model.Post;
+import com.ex.mini.post.presentation.dto.response.PostDetailDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 
 @Controller
-@RequestMapping("/view/post")
+@RequestMapping("/view/posts")
 @RequiredArgsConstructor
 public class PostViewController {
 
@@ -24,19 +25,31 @@ public class PostViewController {
         해당 페이지에 맞는 게시글들을 html에 담는다.
      */
     @GetMapping("/list")
-    public String postListView(@RequestParam(name = "page", required = false, defaultValue = "0") int pageNumber, Model model) {
+    public String postListView(Model model
+        , @RequestParam(name = "page", required = false, defaultValue = "0") int pageNumber) {
         List<Post> postList = postService.getPostList(pageNumber);
         model.addAttribute("postList", postList);
         return "post/list";
     }
 
+    /*
+        글 작성 화면
+        
+        todo
+         작성하던데이터 가지고 있다가 넘겨줄수도
+     */
     @GetMapping("/add")
     public String postAddView() {
         return "post/add";
     }
 
-    @GetMapping("/detail")
-    public String postDetailView() {
+    /*
+        글 상세 화면
+     */
+    @GetMapping("/{postId}/detail")
+    public String postDetailView(Model model, @PathVariable("postId") Long postId) {
+        PostDetailDTO postDetailDTO = postService.getPost(postId);
+        model.addAttribute("postDetail", postDetailDTO);
         return "post/detail";
     }
 

@@ -1,4 +1,4 @@
-package com.ex.mini.post.presentation.dto;
+package com.ex.mini.post.presentation.dto.request;
 
 import lombok.AccessLevel;
 import lombok.Getter;
