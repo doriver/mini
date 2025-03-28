@@ -6,6 +6,9 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api/posts")
 @RequiredArgsConstructor
@@ -18,10 +21,15 @@ public class PostApiController {
         글 작성화면 - 등록하기 버튼
      */
     @PostMapping
-    public String createPost(@RequestBody PostCreateDTO postCreateDTO, HttpSession session) {
+    public Map<String,Object> createPost(@RequestBody PostCreateDTO postCreateDTO, HttpSession session) {
         Long userId = (Long) session.getAttribute("userId"); // 현재 요청한 사용자
-        postService.savePost(postCreateDTO, userId);
-        return "success";
+        Long savedPostId = postService.savePost(postCreateDTO, userId);
+
+        Map<String,Object> resultMap = new HashMap<>();
+        resultMap.put("result","success");
+        resultMap.put("postId",savedPostId);
+
+        return resultMap;
     }
 
     /*

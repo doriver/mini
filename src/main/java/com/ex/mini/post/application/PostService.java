@@ -24,7 +24,7 @@ public class PostService {
     /*
         글 저장
      */
-    public void savePost(PostCreateDTO postCreateDTO, Long userId) {
+    public Long savePost(PostCreateDTO postCreateDTO, Long userId) {
 
         User user = userRepository.findById(userId).orElse(null);
 
@@ -32,7 +32,8 @@ public class PostService {
                 .writer(user).title(postCreateDTO.getTitle()).content(postCreateDTO.getContent())
                 .createdAt(LocalDateTime.now())
                 .build();
-        postRepository.save(post);
+        Post savedPost = postRepository.save(post);
+        return savedPost.getId();
     }
     /*
         글들( 제목, 글쓴이, 작성시간 ... ) 가져오기
@@ -51,7 +52,7 @@ public class PostService {
     /*
         글 가져오기
         todo
-         댓글등 다른 데이터들 join으로 가져와야함 
+         댓글등 다른 데이터들 join으로 가져와야함
      */
     public PostDetailDTO getPost(Long postId) {
         Post post = postRepository.findById(postId).orElse(null);

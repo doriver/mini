@@ -1,3 +1,3 @@
 function goAddPage() {
-    location.href="/view/post/add";
+    location.href="/view/posts/add";
 }

@@ -18,5 +18,25 @@
 <body>
     <div th:replace="~{fragment/header}"></div>
     <div th:replace="~{fragment/nav}"></div>
+    <h2>글 작성</h2>
+    <label>
+        제목 :
+        <input type="text" id="title" placeholder="제목">
+    </label>
+    <label>
+        작성자 :
+        <input type="text" th:value="${session.nickname}" disabled>
+    </label>
+
+    <label>
+        내용 :
+        <textarea id="content">
+        </textarea>
+    </label>
+
+    <button type="button" class="btn btn-primary"
+        onclick="cancelWrite()">작성취소</button>
+    <button type="button" class="btn btn-primary"
+        onclick="addPost()">등록하기</button>
 </body>
 </html>
