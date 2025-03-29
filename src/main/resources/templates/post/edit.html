@@ -12,11 +12,39 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
     <script src="/js/header.js"></script>
-    <script src="/js/post/list.js"></script>
+    <script src="/js/post/edit.js"></script>
     <title>게시판</title>
 </head>
 <body>
     <div th:replace="~{fragment/header}"></div>
     <div th:replace="~{fragment/nav}"></div>
+    <h2>글 수정</h2>
+    <label>
+        postId :
+        <input type="text" th:value="${postDetail.postId}" id="postId" disabled>
+    </label>
+    <label>
+        제목 :
+        <input type="text" th:value="${postDetail.title}" id="title" >
+    </label>
+    <label>
+        작성자 :
+        <input type="text" th:value="${postDetail.writer}" disabled>
+    </label>
+
+    <label>
+        작성시간 :
+        <input type="text" th:value="${postDetail.createdAt}" id="createdAt" disabled>
+    </label>
+
+    <label>
+        내용 :
+        <textarea id="content" th:text="${postDetail.content}" >
+        </textarea>
+    </label>
+    <button type="button" class="btn btn-primary"
+        onclick="cancelEdit()">수정취소</button>
+    <button type="button" class="btn btn-primary"
+        onclick="editPost()">수정하기</button>
 </body>
 </html>

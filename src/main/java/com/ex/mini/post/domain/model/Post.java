@@ -45,4 +45,16 @@ public class Post {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
+
+    public void editTitle(String title) {
+        this.title = title;
+    }
+
+    public void editContent(String content) {
+        this.content = content;
+    }
+
+    public void stampUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
 }

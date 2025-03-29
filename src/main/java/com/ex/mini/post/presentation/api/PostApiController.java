@@ -2,6 +2,7 @@ package com.ex.mini.post.presentation.api;
 
 import com.ex.mini.post.application.PostService;
 import com.ex.mini.post.presentation.dto.request.PostCreateDTO;
+import com.ex.mini.post.presentation.dto.request.PostEditDTO;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -33,6 +34,18 @@ public class PostApiController {
     }
 
     /*
+        글 수정 api
+    */
+    @PatchMapping("/{id}")
+    public String editPost(@PathVariable("id") Long postId
+            ,@RequestBody PostEditDTO postEditDTO, HttpSession session) {
+        Long userId = (Long) session.getAttribute("userId");
+        postService.updatePost(postId, postEditDTO, userId);
+
+        return "success";
+    }
+
+    /*
         글 삭제 api
         글 상세화면 - 삭제버튼
      */
@@ -42,5 +55,7 @@ public class PostApiController {
         postService.removePost(postId, userId);
         return "succsess";
     }
+
+
 
 }

@@ -54,8 +54,13 @@ public class PostViewController {
         return "post/detail";
     }
 
-    @GetMapping("/edit")
-    public String postEditView() {
+    /*
+        글 수정 화면
+     */
+    @GetMapping("/{postId}/edit")
+    public String postEditView(Model model, @PathVariable("postId") Long postId) {
+        PostDetailDTO postDetailDTO = postService.getPost(postId);
+        model.addAttribute("postDetail", postDetailDTO);
         return "post/edit";
     }
 

@@ -3,6 +3,7 @@ package com.ex.mini.post.application;
 import com.ex.mini.post.domain.model.Post;
 import com.ex.mini.post.domain.repository.PostRepository;
 import com.ex.mini.post.presentation.dto.request.PostCreateDTO;
+import com.ex.mini.post.presentation.dto.request.PostEditDTO;
 import com.ex.mini.post.presentation.dto.response.PostDetailDTO;
 import com.ex.mini.post.presentation.dto.response.PostLineDTO;
 import com.ex.mini.user.domain.model.User;
@@ -76,6 +77,24 @@ public class PostService {
         return postDetailDTO;
     }
 
+    /*
+        글 수정하기
+    */
+    public void updatePost(Long postId, PostEditDTO postEditDTO, Long userId) {
+        Post post = postRepository.findById(postId).orElse(null);
+
+        if (post.getWriter().getId() == userId) {
+            post.editTitle(postEditDTO.getTitle());
+            post.editContent(postEditDTO.getContent());
+            post.stampUpdatedAt(LocalDateTime.now());
+
+            int a = 3;
+        }
+
+        postRepository.save(post);
+    }
+    
+    
     /*
         글 삭제하기
      */

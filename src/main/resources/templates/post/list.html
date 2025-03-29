@@ -29,7 +29,8 @@
             </tr>
         </thead>
         <tbody>
-            <tr th:each="postLine : ${postLineList}">
+            <tr th:each="postLine : ${postLineList}" 
+                th:onClick="|location.href='@{/view/posts/{id}/detail(id = ${postLine.postId})}'|" style="cursor:pointer;">
                 <td th:text="${postLine.postId}"></td>
                 <td th:text="${postLine.title}"></td>
                 <td th:text="${postLine.writer}"></td>

@@ -20,17 +20,21 @@
     <div th:replace="~{fragment/nav}"></div>
     <h2>글 상세</h2>
     <label>
+        postId :
+        <input type="text" th:value="${postDetail.postId}" id="postId" disabled>
+    </label>
+    <label>
         제목 :
         <input type="text" th:value="${postDetail.title}" id="title" readonly>
     </label>
     <label>
         작성자 :
-        <input type="text" th:value="${session.nickname}" disabled>
+        <input type="text" th:value="${postDetail.writer}" disabled>
     </label>
 
     <label>
         작성시간 :
-        <input type="text" th:value="${postDetail.createdAt}" id="createdAt" readonly>
+        <input type="text" th:value="${postDetail.createdAt}" id="createdAt" disabled>
     </label>
     <label>
         수정시간 :
@@ -44,9 +48,11 @@
     </label>
     <button type="button" class="btn btn-primary"
         onclick="goListPage()">목록으로</button>
-    <button type="button" class="btn btn-secondary"
-            onclick="goEditPage()">글수정</button>
-    <button type="button" class="btn btn-danger"
-            onclick="deletePost()">글삭제</button>
+    <div th:if="${session.nickname == postDetail.writer}">
+        <button type="button" class="btn btn-secondary"
+                onclick="goEditPage()">글수정</button>
+        <button type="button" class="btn btn-danger"
+                onclick="deletePost()">글삭제</button>
+    </div>
 </body>
 </html>
