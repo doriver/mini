@@ -14,7 +14,7 @@ function editPost() {
         "title": title
         , "content": content
     }
-    console.log(params);
+
     $.ajax({
         type:"PATCH",
         url:"/api/posts/" + postId,

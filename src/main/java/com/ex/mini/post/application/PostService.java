@@ -87,8 +87,6 @@ public class PostService {
             post.editTitle(postEditDTO.getTitle());
             post.editContent(postEditDTO.getContent());
             post.stampUpdatedAt(LocalDateTime.now());
-
-            int a = 3;
         }
 
         postRepository.save(post);
@@ -104,6 +102,5 @@ public class PostService {
         if (post.getWriter().getId() == userId) {
             postRepository.delete(post);
         }
-
     }
 }

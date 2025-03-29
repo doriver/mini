@@ -53,7 +53,7 @@ public class PostApiController {
     public String deletePost(@PathVariable("id") Long postId, HttpSession session) {
         Long userId = (Long) session.getAttribute("userId");
         postService.removePost(postId, userId);
-        return "succsess";
+        return "success";
     }
 
 
