@@ -18,7 +18,8 @@ function addPost() {
     $.ajax({
         type:"POST",
         url:"/api/posts",
-        data:JSON.stringify(params),
+        contentType: "application/json",
+        data: JSON.stringify(params),
         success:function(response) {
 
             if (response.result === "fail") {

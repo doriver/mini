@@ -18,7 +18,32 @@
 <body>
     <div th:replace="~{fragment/header}"></div>
     <div th:replace="~{fragment/nav}"></div>
+    <h2>글 상세</h2>
+    <label>
+        제목 :
+        <input type="text" th:value="${postDetail.title}" id="title" readonly>
+    </label>
+    <label>
+        작성자 :
+        <input type="text" th:value="${session.nickname}" disabled>
+    </label>
 
+    <label>
+        작성시간 :
+        <input type="text" th:value="${postDetail.createdAt}" id="createdAt" readonly>
+    </label>
+    <label>
+        수정시간 :
+        <input type="text" th:value="${postDetail.updatedAt}" id="updatedAt" readonly>
+    </label>
+
+    <label>
+        내용 :
+        <textarea id="content" th:text="${postDetail.content}" readonly>
+        </textarea>
+    </label>
+    <button type="button" class="btn btn-primary"
+        onclick="goListPage()">목록으로</button>
     <button type="button" class="btn btn-secondary"
             onclick="goEditPage()">글수정</button>
     <button type="button" class="btn btn-danger"

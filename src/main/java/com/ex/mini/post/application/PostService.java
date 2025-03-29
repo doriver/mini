@@ -4,6 +4,7 @@ import com.ex.mini.post.domain.model.Post;
 import com.ex.mini.post.domain.repository.PostRepository;
 import com.ex.mini.post.presentation.dto.request.PostCreateDTO;
 import com.ex.mini.post.presentation.dto.response.PostDetailDTO;
+import com.ex.mini.post.presentation.dto.response.PostLineDTO;
 import com.ex.mini.user.domain.model.User;
 import com.ex.mini.user.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -41,12 +43,22 @@ public class PostService {
         todo
          일단 컬럼 다 가져오는거로 했는데, 필요한 컬럼만 가져오도록 변경해야함
      */
-    public List<Post> getPostList(int pageNumber) {
+    public List<PostLineDTO> getPostList(int pageNumber) {
         Pageable pageable = PageRequest.of(pageNumber, 3);
         Page<Post> postPage = postRepository.findAll(pageable);
 
         List<Post> postList = postPage.getContent();
-        return postList;
+
+        List<PostLineDTO> postLineList = new ArrayList<>();
+        for (Post post : postList) {
+            PostLineDTO postLineDTO = PostLineDTO.builder()
+                    .postId(post.getId()).writer(post.getWriter().getNickname())
+                    .title(post.getTitle()).createdAt(post.getCreatedAt())
+                    .build();
+            postLineList.add(postLineDTO);
+        }
+
+        return postLineList;
     }
 
     /*

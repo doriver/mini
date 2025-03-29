@@ -3,6 +3,7 @@ package com.ex.mini.post.presentation.view;
 import com.ex.mini.post.application.PostService;
 import com.ex.mini.post.domain.model.Post;
 import com.ex.mini.post.presentation.dto.response.PostDetailDTO;
+import com.ex.mini.post.presentation.dto.response.PostLineDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,8 +28,8 @@ public class PostViewController {
     @GetMapping("/list")
     public String postListView(Model model
         , @RequestParam(name = "page", required = false, defaultValue = "0") int pageNumber) {
-        List<Post> postList = postService.getPostList(pageNumber);
-        model.addAttribute("postList", postList);
+        List<PostLineDTO> postLineList = postService.getPostList(pageNumber);
+        model.addAttribute("postLineList", postLineList);
         return "post/list";
     }
 

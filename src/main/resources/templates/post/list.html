@@ -18,6 +18,26 @@
 <body>
     <div th:replace="~{fragment/header}"></div>
     <div th:replace="~{fragment/nav}"></div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <td>id</td>
+                <td>제목</td>
+                <td>글쓴이</td>
+                <td>작성시간</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="postLine : ${postLineList}">
+                <td th:text="${postLine.postId}"></td>
+                <td th:text="${postLine.title}"></td>
+                <td th:text="${postLine.writer}"></td>
+                <td th:text="${postLine.createdAt}"></td>
+            </tr>
+        </tbody>
+    </table>
+
     <button th:if="${session.userId}"
             type="button" class="btn btn-primary"
             onclick="goAddPage()">글작성</button>
