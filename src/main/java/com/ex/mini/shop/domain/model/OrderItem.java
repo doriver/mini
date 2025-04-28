@@ -1,7 +1,6 @@
 package com.ex.mini.shop.domain.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,27 +11,25 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Order {
+public class OrderItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long userId;
+    private Long orderId;
 
-    private Long deliveryId;
+    private Long itemId;
 
-    @Enumerated(EnumType.ORDINAL)
-    @NotNull
-    private OrderStatus status;
+    private int count;
 
     @Column(columnDefinition = "TIMESTAMP")
     private LocalDateTime createdAt;
 
     @Builder
-    public Order(Long userId, Long deliveryId, OrderStatus status, LocalDateTime createdAt) {
-        this.userId = userId;
-        this.deliveryId = deliveryId;
-        this.status = status;
+    public OrderItem(Long orderId, Long itemId, int count, LocalDateTime createdAt) {
+        this.orderId = orderId;
+        this.itemId = itemId;
+        this.count = count;
         this.createdAt = createdAt;
     }
 }

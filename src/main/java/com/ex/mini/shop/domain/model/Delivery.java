@@ -12,27 +12,24 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Order {
+public class Delivery {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long userId;
-
-    private Long deliveryId;
-
     @Enumerated(EnumType.ORDINAL)
     @NotNull
-    private OrderStatus status;
+    private DeliveryStatus status;
+
+    private String address;
 
     @Column(columnDefinition = "TIMESTAMP")
     private LocalDateTime createdAt;
 
     @Builder
-    public Order(Long userId, Long deliveryId, OrderStatus status, LocalDateTime createdAt) {
-        this.userId = userId;
-        this.deliveryId = deliveryId;
+    public Delivery(DeliveryStatus status, String address, LocalDateTime createdAt) {
         this.status = status;
+        this.address = address;
         this.createdAt = createdAt;
     }
 }
