@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 })
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Cart {
+public class ItemInCart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -36,7 +36,7 @@ public class Cart {
     private LocalDateTime createdAt;
 
     @Builder
-    public Cart(Long userId, Long itemId, int count, LocalDateTime createdAt) {
+    public ItemInCart(Long userId, Long itemId, int count, LocalDateTime createdAt) {
         this.userId = userId;
         this.itemId = itemId;
         this.count = count;
