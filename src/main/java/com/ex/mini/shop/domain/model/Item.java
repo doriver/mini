@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 
 /*
     userId, count 추가해서 유저별로 아이템 등록하는거 고려
+    아니면, userId 안넣고, 제고관리쪽 이랑 엮을수도 있나?
  */
 @Entity
 @Getter

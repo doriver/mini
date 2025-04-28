@@ -9,6 +9,9 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
+/*
+    cart는 redis로 할수도 있음
+ */
 @Entity
 @Table(indexes = {
         @Index(name = "idx_user", columnList = "userId"),
