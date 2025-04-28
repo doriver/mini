@@ -10,6 +10,10 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 @Entity
+@Table(indexes = {
+        @Index(name = "idx_user", columnList = "userId"),
+        @Index(name = "idx_delivery", columnList = "deliveryId")
+})
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Order {
@@ -17,8 +21,10 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull
     private Long userId;
 
+    @NotNull
     private Long deliveryId;
 
     @Enumerated(EnumType.ORDINAL)

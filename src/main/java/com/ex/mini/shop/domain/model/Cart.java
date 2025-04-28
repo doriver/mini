@@ -1,6 +1,7 @@
 package com.ex.mini.shop.domain.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,6 +10,10 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 @Entity
+@Table(indexes = {
+        @Index(name = "idx_user", columnList = "userId"),
+        @Index(name = "idx_item", columnList = "itemId")
+})
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Cart {
@@ -16,8 +21,10 @@ public class Cart {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull
     private Long userId;
 
+    @NotNull
     private Long itemId;
 
     private int count;
