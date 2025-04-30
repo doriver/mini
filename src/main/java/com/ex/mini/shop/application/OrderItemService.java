@@ -1,7 +1,7 @@
 package com.ex.mini.shop.application;
 
-import com.ex.mini.shop.domain.model.ItemInCart;
-import com.ex.mini.shop.domain.model.OrderItem;
+import com.ex.mini.shop.domain.entity.ItemInCart;
+import com.ex.mini.shop.domain.entity.OrderItem;
 import com.ex.mini.shop.domain.repository.OrderItemRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

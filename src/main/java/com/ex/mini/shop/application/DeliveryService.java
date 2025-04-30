@@ -2,9 +2,8 @@ package com.ex.mini.shop.application;
 
 import com.ex.mini.common.exception.ErrorCode;
 import com.ex.mini.common.exception.ExpectedException;
-import com.ex.mini.common.utils.UserUtils;
-import com.ex.mini.shop.domain.model.Delivery;
-import com.ex.mini.shop.domain.model.DeliveryStatus;
+import com.ex.mini.shop.domain.entity.Delivery;
+import com.ex.mini.shop.domain.entity.DeliveryStatus;
 import com.ex.mini.shop.domain.repository.DeliveryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

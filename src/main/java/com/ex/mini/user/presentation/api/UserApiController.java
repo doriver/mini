@@ -1,7 +1,7 @@
 package com.ex.mini.user.presentation.api;
 
 import com.ex.mini.user.application.UserSignService;
-import com.ex.mini.user.domain.model.User;
+import com.ex.mini.user.domain.entity.User;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;

@@ -1,7 +1,6 @@
 package com.ex.mini.post.presentation.view;
 
 import com.ex.mini.post.application.PostService;
-import com.ex.mini.post.domain.model.Post;
 import com.ex.mini.post.presentation.dto.response.PostDetailDTO;
 import com.ex.mini.post.presentation.dto.response.PostLineDTO;
 import lombok.RequiredArgsConstructor;

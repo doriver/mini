@@ -1,4 +1,4 @@
-package com.ex.mini.shop.domain.model;
+package com.ex.mini.shop.domain.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -11,32 +11,34 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(indexes = {
-        @Index(name = "idx_wallet", columnList = "walletId")
+        @Index(name = "idx_user", columnList = "userId"),
+        @Index(name = "idx_delivery", columnList = "deliveryId")
 })
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ShopLedgerHistory {
+public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull
-    private Long walletId;
+    private Long userId;
+
+    @NotNull
+    private Long deliveryId;
 
     @Enumerated(EnumType.ORDINAL)
     @NotNull
-    private ShopTransaction shopTransaction;
-
-    private long amount;
+    private OrderStatus status;
 
     @Column(columnDefinition = "TIMESTAMP")
     private LocalDateTime createdAt;
 
     @Builder
-    public ShopLedgerHistory(Long walletId, ShopTransaction shopTransaction, long amount, LocalDateTime createdAt) {
-        this.walletId = walletId;
-        this.shopTransaction = shopTransaction;
-        this.amount = amount;
+    public Order(Long userId, Long deliveryId, OrderStatus status, LocalDateTime createdAt) {
+        this.userId = userId;
+        this.deliveryId = deliveryId;
+        this.status = status;
         this.createdAt = createdAt;
     }
 }

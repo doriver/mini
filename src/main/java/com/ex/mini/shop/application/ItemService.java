@@ -2,7 +2,7 @@ package com.ex.mini.shop.application;
 
 import com.ex.mini.common.exception.ErrorCode;
 import com.ex.mini.common.exception.ExpectedException;
-import com.ex.mini.shop.domain.model.Item;
+import com.ex.mini.shop.domain.entity.Item;
 import com.ex.mini.shop.domain.repository.ItemRepository;
 import com.ex.mini.shop.presentation.dto.request.ItemCreateDTO;
 import lombok.RequiredArgsConstructor;

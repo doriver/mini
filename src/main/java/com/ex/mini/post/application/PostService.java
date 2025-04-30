@@ -1,12 +1,12 @@
 package com.ex.mini.post.application;
 
-import com.ex.mini.post.domain.model.Post;
+import com.ex.mini.post.domain.entity.Post;
 import com.ex.mini.post.domain.repository.PostRepository;
 import com.ex.mini.post.presentation.dto.request.PostCreateDTO;
 import com.ex.mini.post.presentation.dto.request.PostEditDTO;
 import com.ex.mini.post.presentation.dto.response.PostDetailDTO;
 import com.ex.mini.post.presentation.dto.response.PostLineDTO;
-import com.ex.mini.user.domain.model.User;
+import com.ex.mini.user.domain.entity.User;
 import com.ex.mini.user.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

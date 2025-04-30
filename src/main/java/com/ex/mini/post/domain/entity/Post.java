@@ -1,6 +1,6 @@
-package com.ex.mini.post.domain.model;
+package com.ex.mini.post.domain.entity;
 
-import com.ex.mini.user.domain.model.User;
+import com.ex.mini.user.domain.entity.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

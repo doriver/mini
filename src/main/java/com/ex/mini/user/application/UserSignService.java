@@ -1,12 +1,10 @@
 package com.ex.mini.user.application;
 
-import com.ex.mini.user.domain.model.Role;
-import com.ex.mini.user.domain.model.User;
+import com.ex.mini.user.domain.entity.Role;
+import com.ex.mini.user.domain.entity.User;
 import com.ex.mini.user.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

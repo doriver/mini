@@ -1,4 +1,4 @@
-package com.ex.mini.user.domain.model;
+package com.ex.mini.shop.domain.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -9,13 +9,17 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
+/*
+    cart는 redis로 할수도 있음
+ */
 @Entity
 @Table(indexes = {
-        @Index(name = "idx_user", columnList = "userId")
+        @Index(name = "idx_user", columnList = "userId"),
+        @Index(name = "idx_item", columnList = "itemId")
 })
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Wallet {
+public class ItemInCart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -23,15 +27,19 @@ public class Wallet {
     @NotNull
     private Long userId;
 
-    private long money;
+    @NotNull
+    private Long itemId;
+
+    private int count;
 
     @Column(columnDefinition = "TIMESTAMP")
-    private LocalDateTime updatedAt;
+    private LocalDateTime createdAt;
 
     @Builder
-    public Wallet(Long userId, long money, LocalDateTime updatedAt) {
+    public ItemInCart(Long userId, Long itemId, int count, LocalDateTime createdAt) {
         this.userId = userId;
-        this.money = money;
-        this.updatedAt = updatedAt;
+        this.itemId = itemId;
+        this.count = count;
+        this.createdAt = createdAt;
     }
 }

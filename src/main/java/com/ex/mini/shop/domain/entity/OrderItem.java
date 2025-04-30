@@ -1,4 +1,4 @@
-package com.ex.mini.shop.domain.model;
+package com.ex.mini.shop.domain.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
