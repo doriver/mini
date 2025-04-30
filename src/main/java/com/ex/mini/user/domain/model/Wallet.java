@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 })
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Account {
+public class Wallet {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -29,7 +29,7 @@ public class Account {
     private LocalDateTime updatedAt;
 
     @Builder
-    public Account(Long userId, long money, LocalDateTime updatedAt) {
+    public Wallet(Long userId, long money, LocalDateTime updatedAt) {
         this.userId = userId;
         this.money = money;
         this.updatedAt = updatedAt;

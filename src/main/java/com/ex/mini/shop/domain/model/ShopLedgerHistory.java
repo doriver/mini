@@ -11,21 +11,21 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(indexes = {
-        @Index(name = "idx_account", columnList = "accountId")
+        @Index(name = "idx_wallet", columnList = "walletId")
 })
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class LedgerHistory {
+public class ShopLedgerHistory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull
-    private Long accountId;
+    private Long walletId;
 
     @Enumerated(EnumType.ORDINAL)
     @NotNull
-    private AccountTransfer accountTransfer;
+    private ShopTransaction shopTransaction;
 
     private long amount;
 
@@ -33,9 +33,9 @@ public class LedgerHistory {
     private LocalDateTime createdAt;
 
     @Builder
-    public LedgerHistory(Long accountId, AccountTransfer accountTransfer, long amount, LocalDateTime createdAt) {
-        this.accountId = accountId;
-        this.accountTransfer = accountTransfer;
+    public ShopLedgerHistory(Long walletId, ShopTransaction shopTransaction, long amount, LocalDateTime createdAt) {
+        this.walletId = walletId;
+        this.shopTransaction = shopTransaction;
         this.amount = amount;
         this.createdAt = createdAt;
     }
