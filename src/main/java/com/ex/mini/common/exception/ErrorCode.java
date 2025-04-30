@@ -14,6 +14,7 @@ public enum ErrorCode {
     , FAIL_SAVE_DELIVERY(HttpStatus.INTERNAL_SERVER_ERROR, "배송정보 입력 실패했습니다.")
     , ZERO_CART(HttpStatus.BAD_REQUEST, "장바구니가 비였습니다.")
     , NEED_TO_LOGIN(HttpStatus.BAD_REQUEST, "로그인이 필요합니다.")
+    , ITEM_NOT_FOUND(HttpStatus.BAD_REQUEST, "해당아이템은 존재하지 않습니다.")
 
     ;
     private final HttpStatus httpStatus;

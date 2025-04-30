@@ -2,10 +2,13 @@ package com.ex.mini.shop.application;
 
 import com.ex.mini.common.exception.ErrorCode;
 import com.ex.mini.common.exception.ExpectedException;
+import com.ex.mini.common.utils.MoneyCalculation;
 import com.ex.mini.common.utils.UserUtils;
+import com.ex.mini.shop.domain.entity.Item;
 import com.ex.mini.shop.domain.entity.ItemInCart;
 import com.ex.mini.shop.domain.repository.ItemInCartRepository;
-import com.ex.mini.shop.presentation.dto.request.CartCreateDTO;
+import com.ex.mini.shop.domain.repository.ItemRepository;
+import com.ex.mini.shop.presentation.dto.request.ItemInCartCreateDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,15 +20,22 @@ import java.util.List;
 public class CartService {
 
     private final ItemInCartRepository itemInCartRepository;
-
+    private final ItemRepository itemRepository;
     /*
         장바구니에 아이템 저장
      */
-    public Long saveCart(CartCreateDTO cartCreateDTO, Long userId) {
+    public Long saveCart(ItemInCartCreateDTO itemInCartCreateDTO, Long userId) {
         UserUtils.checkLogin(userId);
 
+        Long itemId = itemInCartCreateDTO.getItemId();
+        Item item = itemRepository.findById(itemId)
+                .orElseThrow(() -> new ExpectedException(ErrorCode.ITEM_NOT_FOUND));
+
+        int itemCount = itemInCartCreateDTO.getCount();
+        long totalPrice = MoneyCalculation.priceCount(item.getPrice(), itemCount);
+
         ItemInCart itemInCart = ItemInCart.builder()
-                .userId(userId).itemId(cartCreateDTO.getItemId()).count(cartCreateDTO.getCount()).createdAt(LocalDateTime.now())
+                .userId(userId).itemId(itemId).count(itemCount).totalPrice(totalPrice).createdAt(LocalDateTime.now())
                 .build();
         Long savedItemInCartId = itemInCartRepository.save(itemInCart).getId();
         if (savedItemInCartId == null) {

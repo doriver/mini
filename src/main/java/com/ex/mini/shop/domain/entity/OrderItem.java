@@ -29,14 +29,17 @@ public class OrderItem {
 
     private int count;
 
+    private long totalPrice;
+
     @Column(columnDefinition = "TIMESTAMP")
     private LocalDateTime createdAt;
 
     @Builder
-    public OrderItem(Long orderId, Long itemId, int count, LocalDateTime createdAt) {
+    public OrderItem(Long orderId, Long itemId, int count, long totalPrice, LocalDateTime createdAt) {
         this.orderId = orderId;
         this.itemId = itemId;
         this.count = count;
+        this.totalPrice = totalPrice;
         this.createdAt = createdAt;
     }
 }

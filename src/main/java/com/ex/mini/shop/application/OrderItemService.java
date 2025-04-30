@@ -39,7 +39,7 @@ public class OrderItemService {
         List<OrderItem> orderItemList = new ArrayList<>();
         for (ItemInCart itemInCart : itemsInCart) {
             OrderItem orderItem = OrderItem.builder()
-                    .orderId(orderId).itemId(itemInCart.getItemId()).count(itemInCart.getCount()).createdAt(LocalDateTime.now())
+                    .orderId(orderId).itemId(itemInCart.getItemId()).count(itemInCart.getCount()).totalPrice(itemInCart.getTotalPrice()).createdAt(LocalDateTime.now())
                     .build();
             orderItemList.add(orderItem);
         }

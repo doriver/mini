@@ -32,14 +32,17 @@ public class ItemInCart {
 
     private int count;
 
+    private long totalPrice;
+
     @Column(columnDefinition = "TIMESTAMP")
     private LocalDateTime createdAt;
 
     @Builder
-    public ItemInCart(Long userId, Long itemId, int count, LocalDateTime createdAt) {
+    public ItemInCart(Long userId, Long itemId, int count, long totalPrice, LocalDateTime createdAt) {
         this.userId = userId;
         this.itemId = itemId;
         this.count = count;
+        this.totalPrice = totalPrice;
         this.createdAt = createdAt;
     }
 }

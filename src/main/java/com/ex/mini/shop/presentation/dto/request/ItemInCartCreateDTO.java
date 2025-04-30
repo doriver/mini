@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class CartCreateDTO {
+public class ItemInCartCreateDTO {
     private long itemId;
     private int count;
 }
