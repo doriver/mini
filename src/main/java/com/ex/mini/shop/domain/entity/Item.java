@@ -24,13 +24,16 @@ public class Item {
 
     private int price;
 
+    private long count;
+
     @Column(columnDefinition = "TIMESTAMP")
     private LocalDateTime createdAt;
 
     @Builder
-    public Item(String name, int price, LocalDateTime createdAt) {
+    public Item(String name, int price, long count, LocalDateTime createdAt) {
         this.name = name;
         this.price = price;
+        this.count = count;
         this.createdAt = createdAt;
     }
 }

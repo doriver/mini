@@ -24,15 +24,26 @@ public class OrderItemService {
     public void saveOrderItem(Long savedOrderId, Long userId) {
         List<ItemInCart> itemsInCart = cartService.selectItemsInCart(userId);
 
+        List<OrderItem> orderItems = cartIntoOrder(savedOrderId, itemsInCart);
+
+        // 여기 실패 경우에대한 처리 해줘야함
+        orderItemRepository.saveAll(orderItems);
+    }
+
+
+    /*
+        카트에 담긴 Item들 OrderItem으로
+    */
+    public List<OrderItem> cartIntoOrder(Long orderId, List<ItemInCart> itemsInCart) {
+
         List<OrderItem> orderItemList = new ArrayList<>();
         for (ItemInCart itemInCart : itemsInCart) {
             OrderItem orderItem = OrderItem.builder()
-                    .orderId(savedOrderId).itemId(itemInCart.getItemId()).count(itemInCart.getCount()).createdAt(LocalDateTime.now())
+                    .orderId(orderId).itemId(itemInCart.getItemId()).count(itemInCart.getCount()).createdAt(LocalDateTime.now())
                     .build();
             orderItemList.add(orderItem);
         }
-
-        // 여기 실패 경우에대한 처리 해줘야함
-        orderItemRepository.saveAll(orderItemList);
+        return orderItemList;
     }
+
 }
