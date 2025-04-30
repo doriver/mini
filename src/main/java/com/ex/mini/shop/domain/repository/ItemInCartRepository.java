@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface CartRepository extends JpaRepository<ItemInCart, Long> {
+public interface ItemInCartRepository extends JpaRepository<ItemInCart, Long> {
 
     List<ItemInCart> findAllByUserId(Long userId);
 }
