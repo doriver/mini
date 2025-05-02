@@ -22,7 +22,7 @@ public class ItemService {
         아이템 등록
         MANAGER, ADMIN 권한이 등록 가능
      */
-    public Long registerItem(ItemCreateDTO itemCreateDTO, UserInfo userInfo) {
+    public Long insertItem(ItemCreateDTO itemCreateDTO, UserInfo userInfo) {
         UserUtils.checkLogin(userInfo.getUserId());
         UserUtils.checkManagerAdmin(userInfo.getRole());
 

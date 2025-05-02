@@ -1,6 +1,7 @@
 package com.ex.mini.shop.presentation.api;
 
 import com.ex.mini.common.ApiResponse;
+import com.ex.mini.common.argumentResolver.UserInfo;
 import com.ex.mini.shop.application.CartService;
 import com.ex.mini.shop.presentation.dto.request.ItemInCartCreateDTO;
 import lombok.RequiredArgsConstructor;
@@ -20,10 +21,9 @@ public class CartApiController {
         장바구니에 아이템 담기
      */
     @PostMapping
-    public ApiResponse<Long> createCart(@RequestBody ItemInCartCreateDTO itemInCartCreateDTO) {
+    public ApiResponse<Long> saveItemInCart(@RequestBody ItemInCartCreateDTO itemInCartCreateDTO, UserInfo userInfo) {
 
-        Long userId = 1L; // 나중에 인증 적용시킬꺼임
-        Long savedCartId = cartService.saveCart(itemInCartCreateDTO, userId);
+        Long savedCartId = cartService.InsertItemInCart(itemInCartCreateDTO, userInfo.getUserId());
 
         return ApiResponse.success(savedCartId);
     }

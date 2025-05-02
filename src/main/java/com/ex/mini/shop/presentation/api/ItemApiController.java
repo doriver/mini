@@ -22,8 +22,8 @@ public class ItemApiController {
         아이템 등록( 마트에서 판매할 )
      */
     @PostMapping
-    public ApiResponse<Long> createItem(@RequestBody ItemCreateDTO itemCreateDTO, UserInfo userInfo) {
-        Long registeredItemId = itemService.registerItem(itemCreateDTO, userInfo);
+    public ApiResponse<Long> registerItem(@RequestBody ItemCreateDTO itemCreateDTO, UserInfo userInfo) {
+        Long registeredItemId = itemService.insertItem(itemCreateDTO, userInfo);
 
         return ApiResponse.success(registeredItemId);
     }

@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -24,11 +23,12 @@ public class CartService {
     private final ItemRepository itemRepository;
 
 
-
     /*
         장바구니에 아이템 저장
+        1. Item조회
+        2. 조회한 정보로 저장
      */
-    public Long saveCart(ItemInCartCreateDTO itemInCartCreateDTO, Long userId) {
+    public Long InsertItemInCart(ItemInCartCreateDTO itemInCartCreateDTO, Long userId) {
         UserUtils.checkLogin(userId);
 
         Long itemId = itemInCartCreateDTO.getItemId();
@@ -49,6 +49,19 @@ public class CartService {
     }
 
     /*
+        장바구니 비우기
+        userId에 해당하는 것들 지움
+     */
+    public void emptyCart(Long userId) {
+        try {
+            itemInCartRepository.deleteByUserId(userId);
+        } catch (Exception e) {
+            throw new ExpectedException(ErrorCode.FAIL_TRANSACTION);
+        }
+    }
+    
+
+    /*
         장바구니에 있는 아이템들 가져오기
      */
     public List<ItemInCart> selectItemsInCart(Long userId) {
@@ -61,17 +74,7 @@ public class CartService {
         return itemsInCart;
     }
 
-    /*
-        장바구니 비우기
-        userId에 해당하는 것들 지움
-     */
-    public void emptyCart(Long userId) {
-        try {
-            itemInCartRepository.deleteByUserId(userId);
-        } catch (Exception e) {
-            throw new ExpectedException(ErrorCode.FAIL_TRANSACTION);
-        }
-    }
+
 
     /*
         장바구니에 담긴 item과 실제 item 개수 비교
