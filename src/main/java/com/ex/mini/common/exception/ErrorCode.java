@@ -16,6 +16,7 @@ public enum ErrorCode {
     , FAIL_EMPTY_CART(HttpStatus.INTERNAL_SERVER_ERROR, "장바구니 비우기에 실패했습니다.")
     , ZERO_CART(HttpStatus.BAD_REQUEST, "장바구니가 비였습니다.")
     , NEED_TO_LOGIN(HttpStatus.BAD_REQUEST, "로그인이 필요합니다.")
+    , DONT_HAVE_AUTHORITY(HttpStatus.BAD_REQUEST, "해당 서비스를 이용할 권한이 없습니다.")
     , ITEM_NOT_FOUND(HttpStatus.BAD_REQUEST, "해당아이템은 존재하지 않습니다.")
     , ITEM_SOLD_OUT(HttpStatus.BAD_REQUEST, "해당아이템은 품절되었습니다")
     , ITEM_OUTOF_STOCK(HttpStatus.BAD_REQUEST, "해당아이템의 제고가 부족합니다.")

@@ -9,4 +9,5 @@ import lombok.NoArgsConstructor;
 public class ItemCreateDTO {
     private String name;
     private int price;
+    private int count;
 }
