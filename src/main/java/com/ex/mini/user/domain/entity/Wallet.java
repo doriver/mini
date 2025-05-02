@@ -1,5 +1,7 @@
 package com.ex.mini.user.domain.entity;
 
+import com.ex.mini.common.exception.ErrorCode;
+import com.ex.mini.common.exception.ExpectedException;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
@@ -33,5 +35,13 @@ public class Wallet {
         this.userId = userId;
         this.money = money;
         this.updatedAt = updatedAt;
+    }
+
+    public void minusMoney(long cost) {
+        if (money > cost) {
+            this.money = money - cost;
+        } else { // 이건 여기서 해주는게 좋을듯?
+            throw new ExpectedException(ErrorCode.NOT_ENOUGH_MONEY);
+        }
     }
 }

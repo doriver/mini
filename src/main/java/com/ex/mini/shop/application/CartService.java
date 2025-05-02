@@ -22,6 +22,9 @@ public class CartService {
 
     private final ItemInCartRepository itemInCartRepository;
     private final ItemRepository itemRepository;
+
+
+
     /*
         장바구니에 아이템 저장
      */
@@ -56,6 +59,18 @@ public class CartService {
             throw new ExpectedException(ErrorCode.ZERO_CART);
         }
         return itemsInCart;
+    }
+
+    /*
+        장바구니 비우기
+        userId에 해당하는 것들 지움
+     */
+    public void emptyCart(Long userId) {
+        try {
+            itemInCartRepository.deleteByUserId(userId);
+        } catch (Exception e) {
+            throw new ExpectedException(ErrorCode.FAIL_TRANSACTION);
+        }
     }
 
     /*

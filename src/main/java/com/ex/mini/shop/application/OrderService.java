@@ -45,7 +45,7 @@ public class OrderService {
     /*
         주문하기
         작업의 단위를 생각해야함, 한꺼번에 묶을
-        1.배송정보 저장    2.Order생성    3.OrderItem들 저장     4.돈 거래
+        1.배송정보 저장    2.Order생성    3.OrderItem들 저장     4.돈 결제
      */
     @Transactional
     public Long saveOrder(Long userId, String address) {
@@ -66,8 +66,8 @@ public class OrderService {
         // 주문된 아이템들 등록
         orderItemService.saveOrderItem(savedOrderId, userId);
 
-        //
-
+        // 구매자 돈 차감 , 마트 장부에 입금 처리
+        moneyService.moneyTransaction(userId);
 
         return savedOrderId;
     }

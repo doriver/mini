@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class OrderApiController {
 
     private final OrderService orderService;
+    private final CartService cartService;
 
     /*
         주문하기
@@ -29,13 +30,16 @@ public class OrderApiController {
 
         Long userId = 1L; // 나중에 인증 적용시킬꺼임
 
-        // 구매할수 있는지 판단
+        // 구매할수 있는지 판단( 돈, 개수 )
         orderService.judgeBuy(userId);
 
         // 주문하기
         Long savedOrderId = orderService.saveOrder(userId, orderCreateDTO.getAddress());
 
         // 장바구니 비우기
+        try {
+            cartService.emptyCart(userId);
+        } catch (Exception ignored) { }
 
         return ApiResponse.success(savedOrderId);
     }
