@@ -30,6 +30,8 @@ public class ItemInCart {
     @NotNull
     private Long itemId;
 
+    private String name;
+
     private int count;
 
     private long totalPrice;
@@ -38,9 +40,10 @@ public class ItemInCart {
     private LocalDateTime createdAt;
 
     @Builder
-    public ItemInCart(Long userId, Long itemId, int count, long totalPrice, LocalDateTime createdAt) {
+    public ItemInCart(Long userId, Long itemId, String name, int count, long totalPrice, LocalDateTime createdAt) {
         this.userId = userId;
         this.itemId = itemId;
+        this.name = name;
         this.count = count;
         this.totalPrice = totalPrice;
         this.createdAt = createdAt;

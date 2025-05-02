@@ -1,6 +1,8 @@
 package com.ex.mini.shop.presentation.api;
 
 import com.ex.mini.common.ApiResponse;
+import com.ex.mini.shop.application.CartService;
+import com.ex.mini.shop.application.MoneyService;
 import com.ex.mini.shop.application.OrderService;
 import com.ex.mini.shop.presentation.dto.request.OrderCreateDTO;
 import lombok.RequiredArgsConstructor;
@@ -18,17 +20,17 @@ public class OrderApiController {
 
     /*
         주문하기
+        1. 주문자의 장바구니에 있는 상품들 구매할수 있는지 판단
+        2. 주문진행
+        3. 장바구니 비우기( 비동기로 처리하면 좋을듯 )
      */
     @PostMapping
     public ApiResponse<Long> createOrder(@RequestBody OrderCreateDTO orderCreateDTO) {
 
         Long userId = 1L; // 나중에 인증 적용시킬꺼임
 
-        // 총 가격과 있는돈 비교하기
-
-
-        // Item 개수 확인하기
-
+        // 구매할수 있는지 판단
+        orderService.judgeBuy(userId);
 
         // 주문하기
         Long savedOrderId = orderService.saveOrder(userId, orderCreateDTO.getAddress());

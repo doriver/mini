@@ -15,6 +15,10 @@ public enum ErrorCode {
     , ZERO_CART(HttpStatus.BAD_REQUEST, "장바구니가 비였습니다.")
     , NEED_TO_LOGIN(HttpStatus.BAD_REQUEST, "로그인이 필요합니다.")
     , ITEM_NOT_FOUND(HttpStatus.BAD_REQUEST, "해당아이템은 존재하지 않습니다.")
+    , ITEM_SOLD_OUT(HttpStatus.BAD_REQUEST, "해당아이템은 품절되었습니다")
+    , ITEM_OUTOF_STOCK(HttpStatus.BAD_REQUEST, "해당아이템의 제고가 부족합니다.")
+    , WALLET_NOT_FOUND(HttpStatus.BAD_REQUEST, "지갑이 존재하지 않습니다.")
+    , DONT_BUY_MONEY(HttpStatus.BAD_REQUEST, "보유하신 금액이 모잘라 구매할수 없습니다")
 
     ;
     private final HttpStatus httpStatus;

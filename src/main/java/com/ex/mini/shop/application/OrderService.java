@@ -20,11 +20,32 @@ public class OrderService {
 
     private final DeliveryService deliveryService;
     private final OrderItemService orderItemService;
+    private final MoneyService moneyService;
+    private final CartService cartService;
+
+    /*
+        주문자의 장바구니에 있는 상품들 구매할수 있는지 판단
+        1. 돈    2. 상품 개수
+     */
+    public void judgeBuy(Long userId) {
+        // 총 가격과 있는돈 비교하기
+        boolean buyableMoney = moneyService.judgeBuyableMoney(userId);
+        if (! buyableMoney) {
+            throw new ExpectedException(ErrorCode.DONT_BUY_MONEY);
+        }
+
+        // Item 개수 확인하기
+        String result = cartService.judgeBuyableCount(userId);
+        if (! result.equals("ok")) {
+            throw new ExpectedException(result);
+        }
+    }
 
 
     /*
         주문하기
         작업의 단위를 생각해야함, 한꺼번에 묶을
+        1.배송정보 저장    2.Order생성    3.OrderItem들 저장     4.돈 거래
      */
     @Transactional
     public Long saveOrder(Long userId, String address) {
@@ -44,6 +65,9 @@ public class OrderService {
 
         // 주문된 아이템들 등록
         orderItemService.saveOrderItem(savedOrderId, userId);
+
+        //
+
 
         return savedOrderId;
     }

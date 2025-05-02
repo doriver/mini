@@ -27,12 +27,6 @@ public class ApiResponse<T> {
 
     // 실패 응답
     // GlobalExceptionHandler에서 사용됨
-    public static <T> ApiResponse<T> error(ErrorCode errorCode) {
-        return new ApiResponse<>(errorCode.getHttpStatus().value(), null, errorCode.getMessage());
-    }
-
-    // 실패 응답 - 에러 메세지가 정해져 있지 않은 경우
-    // GlobalExceptionHandler에서 사용됨
     public static <T> ApiResponse<T> error(HttpStatus httpStatus, String errorMessage) {
         return new ApiResponse<>(httpStatus.value(), null, errorMessage);
     }

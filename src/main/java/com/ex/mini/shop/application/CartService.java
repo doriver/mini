@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -35,7 +36,7 @@ public class CartService {
         long totalPrice = MoneyCalculation.priceCount(item.getPrice(), itemCount);
 
         ItemInCart itemInCart = ItemInCart.builder()
-                .userId(userId).itemId(itemId).count(itemCount).totalPrice(totalPrice).createdAt(LocalDateTime.now())
+                .userId(userId).itemId(itemId).name(item.getName()).count(itemCount).totalPrice(totalPrice).createdAt(LocalDateTime.now())
                 .build();
         Long savedItemInCartId = itemInCartRepository.save(itemInCart).getId();
         if (savedItemInCartId == null) {
@@ -56,4 +57,25 @@ public class CartService {
         }
         return itemsInCart;
     }
+
+    /*
+        장바구니에 담긴 item과 실제 item 개수 비교
+         1. 장바구니에 있는 아이템 가져오기   2. 거기의 개수와 item개수 비교하기
+     */
+    public String judgeBuyableCount(Long userId) {
+        List<ItemInCart> itemsInCart = selectItemsInCart(userId);
+
+        for (ItemInCart itemInCart : itemsInCart) {
+           Item item = itemRepository.findById(itemInCart.getItemId()).orElse(null);
+           if (item == null) {
+               return itemInCart.getName() + "는 존재하지 않습니다.";
+           }
+
+           if (itemInCart.getCount() > item.getCount()) {
+               return item.getName() + "의 재고가 부족합니다.";
+           }
+        }
+        return "ok";
+    }
+
 }
