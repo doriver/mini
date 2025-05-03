@@ -27,6 +27,7 @@ public class ItemService {
         UserUtils.checkLogin(userInfo.getUserId());
         UserUtils.checkManagerAdmin(userInfo.getRole());
 
+        // Item저장
         Item item = new Item(itemCreateDTO.getName(), itemCreateDTO.getPrice(), itemCreateDTO.getCount(), LocalDateTime.now());
         Item savedItem = itemServiceLeaf.insertItem(item, ErrorCode.FAIL_SAVE_ITEM);
         return savedItem.getId();

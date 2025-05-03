@@ -39,7 +39,6 @@ public class ItemInCart {
     @Column(columnDefinition = "TIMESTAMP")
     private LocalDateTime createdAt;
 
-    @Builder
     public ItemInCart(Long userId, Long itemId, String name, int count, long totalPrice, LocalDateTime createdAt) {
         this.userId = userId;
         this.itemId = itemId;

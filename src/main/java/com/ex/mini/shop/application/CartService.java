@@ -4,6 +4,7 @@ import com.ex.mini.common.exception.ErrorCode;
 import com.ex.mini.common.exception.ExpectedException;
 import com.ex.mini.common.utils.MoneyCalculation;
 import com.ex.mini.common.utils.UserUtils;
+import com.ex.mini.shop.application.leaf.ItemInCartServiceLeaf;
 import com.ex.mini.shop.domain.entity.Item;
 import com.ex.mini.shop.domain.entity.ItemInCart;
 import com.ex.mini.shop.domain.repository.ItemInCartRepository;
@@ -20,6 +21,7 @@ import java.util.List;
 public class CartService {
 
     private final ItemInCartRepository itemInCartRepository;
+    private final ItemInCartServiceLeaf itemInCartServiceLeaf;
     private final ItemRepository itemRepository;
 
 
@@ -31,6 +33,7 @@ public class CartService {
     public Long InsertItemInCart(ItemInCartCreateDTO itemInCartCreateDTO, Long userId) {
         UserUtils.checkLogin(userId);
 
+        // Item조회
         Long itemId = itemInCartCreateDTO.getItemId();
         Item item = itemRepository.findById(itemId)
                 .orElseThrow(() -> new ExpectedException(ErrorCode.ITEM_NOT_FOUND));
@@ -38,14 +41,11 @@ public class CartService {
         int itemCount = itemInCartCreateDTO.getCount();
         long totalPrice = MoneyCalculation.priceCount(item.getPrice(), itemCount);
 
-        ItemInCart itemInCart = ItemInCart.builder()
-                .userId(userId).itemId(itemId).name(item.getName()).count(itemCount).totalPrice(totalPrice).createdAt(LocalDateTime.now())
-                .build();
-        Long savedItemInCartId = itemInCartRepository.save(itemInCart).getId();
-        if (savedItemInCartId == null) {
-            throw new ExpectedException(ErrorCode.FAIL_SAVE_CART);
-        }
-        return savedItemInCartId;
+        // ItemInCart저장
+        ItemInCart itemInCart = new ItemInCart(userId, itemId, item.getName(), itemCount, totalPrice, LocalDateTime.now());
+        ItemInCart savedItemInCart = itemInCartServiceLeaf.insertItemInCart(itemInCart, ErrorCode.FAIL_SAVE_CART);
+        
+        return savedItemInCart.getId();
     }
 
     /*
