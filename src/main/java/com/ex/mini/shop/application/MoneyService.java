@@ -2,19 +2,16 @@ package com.ex.mini.shop.application;
 
 import com.ex.mini.common.exception.ErrorCode;
 import com.ex.mini.common.exception.ExpectedException;
-import com.ex.mini.shop.domain.entity.ItemInCart;
 import com.ex.mini.shop.domain.entity.ShopLedgerHistory;
 import com.ex.mini.shop.domain.entity.ShopTransaction;
 import com.ex.mini.shop.domain.repository.ShopLedgerHistoryRepository;
-import com.ex.mini.user.application.WalletService;
+import com.ex.mini.user.application.WalletReadService;
 import com.ex.mini.user.domain.entity.Wallet;
 import com.ex.mini.user.domain.repository.WalletRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -23,19 +20,11 @@ public class MoneyService {
     private final WalletRepository walletRepository;
     private final ShopLedgerHistoryRepository shopLedgerHistoryRepository;
 
-    private final CartService cartService;
-    private final WalletService walletService;
+    private final WalletReadService walletReadService;
 
-    /*
-        장바구니에 있는 Item들 총 가격, 구매자의 있는돈 비교하기
-     */
-    public boolean judgeBuyableMoney(Long userId) {
+    private final CartReadService cartReadService;
 
-        long totalPrice = calculatePriceInCart(userId);
-        long money = walletService.selectWalletMoney(userId);
 
-        return money >= totalPrice;
-    }
 
     /*
         구매자 돈 차감 , 마트 장부에 입금 처리
@@ -61,19 +50,7 @@ public class MoneyService {
         }
     }
 
-    /*
-        장바구니에 있는 item들 총 가격 구하기
-     */
-    public long calculatePriceInCart(Long userId) {
-        List<ItemInCart> itemsInCart = cartService.selectItemsInCart(userId);
-        long totalPrice = 0;
 
-        for (ItemInCart itemInCart: itemsInCart) {
-            totalPrice += itemInCart.getTotalPrice();
-        }
-        
-        return totalPrice;
-    }
 
 
 

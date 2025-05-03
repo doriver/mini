@@ -16,13 +16,13 @@ public class OrderItemService {
 
     private final OrderItemRepository orderItemRepository;
 
-    private final CartService cartService;
+    private final CartReadService cartReadService;
 
     /*
         주문된 아이템 등록
      */
     public void saveOrderItem(Long savedOrderId, Long userId) {
-        List<ItemInCart> itemsInCart = cartService.selectItemsInCart(userId);
+        List<ItemInCart> itemsInCart = cartReadService.selectItemsInCart(userId);
 
         List<OrderItem> orderItems = cartIntoOrder(savedOrderId, itemsInCart);
 

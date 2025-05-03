@@ -1,11 +1,13 @@
 package com.ex.mini.shop.application;
 
+import com.ex.mini.common.argumentResolver.UserInfo;
 import com.ex.mini.common.exception.ErrorCode;
 import com.ex.mini.common.exception.ExpectedException;
 import com.ex.mini.common.utils.UserUtils;
 import com.ex.mini.shop.domain.entity.Order;
 import com.ex.mini.shop.domain.entity.OrderStatus;
 import com.ex.mini.shop.domain.repository.OrderRepository;
+import com.ex.mini.shop.presentation.dto.request.OrderCreateDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,19 +25,43 @@ public class OrderService {
     private final MoneyService moneyService;
     private final CartService cartService;
 
+    private final CartBeforeOrderService cartBeforeOrderService;
+
+    /*
+        주문 절차
+        1. 주문자의 장바구니에 있는 상품들 구매할수 있는지 판단
+        2. 주문진행
+        3. 장바구니 비우기( 비동기로 처리하면 좋을듯 )
+     */
+    public Long processOrder(OrderCreateDTO orderCreateDTO, UserInfo userInfo) {
+        UserUtils.checkLogin(userInfo.getUserId());
+
+        // 구매할수 있는지 판단( 돈, 개수 )
+        judgeBuyable(userInfo.getUserId());
+
+        // 주문하기
+        Long savedOrderId = createOrder(userInfo.getUserId(), orderCreateDTO.getAddress());
+
+        // 장바구니 비우기
+        cartService.emptyCartAfterOrder(userInfo.getUserId());
+
+        return savedOrderId;
+    }
+
     /*
         주문자의 장바구니에 있는 상품들 구매할수 있는지 판단
         1. 돈    2. 상품 개수
      */
-    public void judgeBuy(Long userId) {
+    public void judgeBuyable(Long userId) {
+
         // 총 가격과 있는돈 비교하기
-        boolean buyableMoney = moneyService.judgeBuyableMoney(userId);
-        if (! buyableMoney) {
+        boolean buyablePrice = cartBeforeOrderService.buyablePrice(userId);
+        if (! buyablePrice) {
             throw new ExpectedException(ErrorCode.DONT_BUY_MONEY);
         }
 
         // Item 개수 확인하기
-        String result = cartService.judgeBuyableCount(userId);
+        String result = cartBeforeOrderService.buyableCount(userId);
         if (! result.equals("ok")) {
             throw new ExpectedException(result);
         }
@@ -48,8 +74,7 @@ public class OrderService {
         1.배송정보 저장    2.Order생성    3.OrderItem들 저장     4.돈 결제
      */
     @Transactional
-    public Long saveOrder(Long userId, String address) {
-        UserUtils.checkLogin(userId);
+    public Long createOrder(Long userId, String address) {
 
         // 배송정보 저장
         Long savedDeliveryId = deliveryService.saveDelivery(address);

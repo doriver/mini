@@ -4,7 +4,6 @@ import com.ex.mini.common.exception.ErrorCode;
 import com.ex.mini.common.exception.ExpectedException;
 import com.ex.mini.common.utils.MoneyCalculation;
 import com.ex.mini.common.utils.UserUtils;
-import com.ex.mini.shop.application.leaf.ItemInCartServiceLeaf;
 import com.ex.mini.shop.domain.entity.Item;
 import com.ex.mini.shop.domain.entity.ItemInCart;
 import com.ex.mini.shop.domain.repository.ItemInCartRepository;
@@ -47,51 +46,16 @@ public class CartService {
     }
 
     /*
-        장바구니 비우기
+        주문 완료후, 장바구니 비우기
         userId에 해당하는 것들 지움
      */
-    public void emptyCart(Long userId) {
+    public void emptyCartAfterOrder(Long userId) {
         try {
             itemInCartRepository.deleteByUserId(userId);
-        } catch (Exception e) {
-            throw new ExpectedException(ErrorCode.FAIL_TRANSACTION);
-        }
+        } catch (Exception ignored) {}
     }
     
 
-    /*
-        장바구니에 있는 아이템들 가져오기
-     */
-    public List<ItemInCart> selectItemsInCart(Long userId) {
-        List<ItemInCart> itemsInCart = itemInCartRepository.findAllByUserId(userId);
 
-        // findAllBy 결과값 확인해야함
-        if (itemsInCart.isEmpty()) {
-            throw new ExpectedException(ErrorCode.ZERO_CART);
-        }
-        return itemsInCart;
-    }
-
-
-
-    /*
-        장바구니에 담긴 item과 실제 item 개수 비교
-         1. 장바구니에 있는 아이템 가져오기   2. 거기의 개수와 item개수 비교하기
-     */
-    public String judgeBuyableCount(Long userId) {
-        List<ItemInCart> itemsInCart = selectItemsInCart(userId);
-
-        for (ItemInCart itemInCart : itemsInCart) {
-           Item item = itemRepository.findById(itemInCart.getItemId()).orElse(null);
-           if (item == null) {
-               return itemInCart.getName() + "는 존재하지 않습니다.";
-           }
-
-           if (itemInCart.getCount() > item.getCount()) {
-               return item.getName() + "의 재고가 부족합니다.";
-           }
-        }
-        return "ok";
-    }
 
 }
