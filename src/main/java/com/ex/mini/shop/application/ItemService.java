@@ -4,6 +4,7 @@ import com.ex.mini.common.argumentResolver.UserInfo;
 import com.ex.mini.common.exception.ErrorCode;
 import com.ex.mini.common.exception.ExpectedException;
 import com.ex.mini.common.utils.UserUtils;
+import com.ex.mini.shop.application.leaf.ItemServiceLeaf;
 import com.ex.mini.shop.domain.entity.Item;
 import com.ex.mini.shop.domain.repository.ItemRepository;
 import com.ex.mini.shop.presentation.dto.request.ItemCreateDTO;
@@ -16,7 +17,7 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class ItemService {
 
-    private final ItemRepository itemRepository;
+    private final ItemServiceLeaf itemServiceLeaf;
     /*
         todo : 재고(Stock)에 있는 물건을 item으로 등록할수 있도록할꺼, 아직 재고쪽은 미개발
         아이템 등록
@@ -26,15 +27,8 @@ public class ItemService {
         UserUtils.checkLogin(userInfo.getUserId());
         UserUtils.checkManagerAdmin(userInfo.getRole());
 
-        Item item = Item.builder()
-                .name(itemCreateDTO.getName()).price(itemCreateDTO.getPrice()).count(itemCreateDTO.getCount()).createdAt(LocalDateTime.now())
-                .build();
-
-        Long savedItemId = itemRepository.save(item).getId();
-
-        if (savedItemId == null) {
-            throw new ExpectedException(ErrorCode.FAIL_SAVE_ITEM);
-        }
-        return savedItemId;
+        Item item = new Item(itemCreateDTO.getName(), itemCreateDTO.getPrice(), itemCreateDTO.getCount(), LocalDateTime.now());
+        Item savedItem = itemServiceLeaf.insertItem(item, ErrorCode.FAIL_SAVE_ITEM);
+        return savedItem.getId();
     }
 }

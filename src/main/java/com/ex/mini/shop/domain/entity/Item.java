@@ -29,7 +29,6 @@ public class Item {
     @Column(columnDefinition = "TIMESTAMP")
     private LocalDateTime createdAt;
 
-    @Builder
     public Item(String name, int price, long count, LocalDateTime createdAt) {
         this.name = name;
         this.price = price;
