@@ -23,7 +23,7 @@ public class ItemApiController {
      */
     @PostMapping
     public ApiResponse<Long> registerItem(@RequestBody ItemCreateDTO itemCreateDTO, UserInfo userInfo) {
-        Long registeredItemId = itemService.insertItem(itemCreateDTO, userInfo);
+        Long registeredItemId = itemService.registerItem(itemCreateDTO, userInfo);
 
         return ApiResponse.success(registeredItemId);
     }

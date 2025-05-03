@@ -23,7 +23,7 @@ public class CartApiController {
     @PostMapping
     public ApiResponse<Long> saveItemInCart(@RequestBody ItemInCartCreateDTO itemInCartCreateDTO, UserInfo userInfo) {
 
-        Long savedCartId = cartService.InsertItemInCart(itemInCartCreateDTO, userInfo.getUserId());
+        Long savedCartId = cartService.saveItemInCart(itemInCartCreateDTO, userInfo.getUserId());
 
         return ApiResponse.success(savedCartId);
     }

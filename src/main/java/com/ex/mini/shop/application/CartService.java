@@ -13,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -28,7 +27,7 @@ public class CartService {
         1. Item조회
         2. 조회한 정보로 저장
      */
-    public Long InsertItemInCart(ItemInCartCreateDTO itemInCartCreateDTO, Long userId) {
+    public Long saveItemInCart(ItemInCartCreateDTO itemInCartCreateDTO, Long userId) {
         UserUtils.checkLogin(userId);
 
         // Item조회
