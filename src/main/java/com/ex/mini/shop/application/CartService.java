@@ -21,7 +21,6 @@ import java.util.List;
 public class CartService {
 
     private final ItemInCartRepository itemInCartRepository;
-    private final ItemInCartServiceLeaf itemInCartServiceLeaf;
     private final ItemRepository itemRepository;
 
 
@@ -43,8 +42,7 @@ public class CartService {
 
         // ItemInCart저장
         ItemInCart itemInCart = new ItemInCart(userId, itemId, item.getName(), itemCount, totalPrice, LocalDateTime.now());
-        ItemInCart savedItemInCart = itemInCartServiceLeaf.insertItemInCart(itemInCart, ErrorCode.FAIL_SAVE_CART);
-        
+        ItemInCart savedItemInCart = itemInCartRepository.save(itemInCart);
         return savedItemInCart.getId();
     }
 

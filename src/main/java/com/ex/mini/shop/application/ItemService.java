@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class ItemService {
 
-    private final ItemServiceLeaf itemServiceLeaf;
+    private final ItemRepository itemRepository;
     /*
         todo : 재고(Stock)에 있는 물건을 item으로 등록할수 있도록할꺼, 아직 재고쪽은 미개발
         아이템 등록
@@ -29,7 +29,7 @@ public class ItemService {
 
         // Item저장
         Item item = new Item(itemCreateDTO.getName(), itemCreateDTO.getPrice(), itemCreateDTO.getCount(), LocalDateTime.now());
-        Item savedItem = itemServiceLeaf.insertItem(item, ErrorCode.FAIL_SAVE_ITEM);
+        Item savedItem = itemRepository.save(item);
         return savedItem.getId();
     }
 }

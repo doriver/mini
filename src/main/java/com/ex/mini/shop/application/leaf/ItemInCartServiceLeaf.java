@@ -13,14 +13,4 @@ public class ItemInCartServiceLeaf {
 
     private final ItemInCartRepository itemInCartRepository;
 
-    // 단순 저장
-    public ItemInCart insertItemInCart(ItemInCart itemInCart, ErrorCode errorCode) {
-        ItemInCart savedItemInCart = null;
-        try {
-            savedItemInCart = itemInCartRepository.save(itemInCart);
-        } catch (Exception e) {
-            throw new ExpectedException(errorCode);
-        }
-        return savedItemInCart;
-    }
 }
