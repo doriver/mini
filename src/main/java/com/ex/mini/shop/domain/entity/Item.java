@@ -23,14 +23,14 @@ public class Item {
 
     private String name;
 
-    private long price;
+    private int price;
 
     private int count;
 
     @Column(columnDefinition = "TIMESTAMP")
     private LocalDateTime createdAt;
 
-    public Item(String name, long price, int count, LocalDateTime createdAt) {
+    public Item(String name, int price, int count, LocalDateTime createdAt) {
         this.name = name;
         this.price = price;
         this.count = count;

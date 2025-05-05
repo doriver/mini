@@ -32,7 +32,7 @@ public class Cart {
     /*
         아이템id와 그 갯수
      */
-    public void setItemAndCount() {
+    public void countItems() {
         Map<Long, Integer> itemAndCountMap = new HashMap<>();
         for (ItemInCart itemInCart : itemsInCart) {
             if (itemAndCountMap.containsKey(itemInCart.getItemId())) {

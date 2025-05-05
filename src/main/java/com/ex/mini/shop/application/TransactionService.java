@@ -25,7 +25,7 @@ public class TransactionService {
 
     @Transactional
     public Long order(Long userId, Long deliveryId, Cart cart) {
-        // 주문 생성
+        // Order생성
         Order order = new Order(userId, deliveryId, OrderStatus.ORDER, LocalDateTime.now());
         Long savedOrderId = null;
         try {
@@ -35,10 +35,10 @@ public class TransactionService {
         }
 
         // OrderItem들 저장
-        Map<Long, Integer> orderedItemCountMap = orderItemService.saveOrderItem(savedOrderId, cart.getItemsInCart());
+        orderItemService.saveOrderItem(savedOrderId, cart.getItemsInCart());
 
         // Item들 개수 차감
-        cart.setItemAndCount();
+        cart.countItems();
         itemService.itemCountDownByOrder(cart.getItemAndCountMap());
 
         // 구매자 돈 차감 , 마트 장부에 입금 처리

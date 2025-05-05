@@ -50,7 +50,8 @@ public class CartService {
         주문 완료후, 장바구니 비우기
         userId에 해당하는 것들 지움
      */
-    public void emptyCartAfterOrder(Long userId) {
+    public void emptyCartAfterOrder(Long userId, Cart cart) {
+        cart = null;
         try {
             itemInCartRepository.deleteByUserId(userId);
         } catch (Exception ignored) {}

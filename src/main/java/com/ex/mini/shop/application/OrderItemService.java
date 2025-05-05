@@ -20,13 +20,10 @@ public class OrderItemService {
 
     private final OrderItemRepository orderItemRepository;
 
-    private final CartReadService cartReadService;
-
     /*
         주문된 아이템 등록
-        아이템id, count 반환
      */
-    public Map<Long, Integer> saveOrderItem(Long savedOrderId, List<ItemInCart> itemsInCart) {
+    public void saveOrderItem(Long savedOrderId, List<ItemInCart> itemsInCart) {
 
         List<OrderItem> orderItems = cartIntoOrder(savedOrderId, itemsInCart);
 
@@ -35,11 +32,7 @@ public class OrderItemService {
         } catch (Exception e) {
             throw new ExpectedException(ErrorCode.FAIL_ORDER_ITEM);
         }
-
-
     }
-
-
 
 
     /*

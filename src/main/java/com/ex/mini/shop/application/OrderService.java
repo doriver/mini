@@ -22,7 +22,6 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class OrderService {
 
-
     private final DeliveryService deliveryService;
     private final CartService cartService;
     private final CartBeforeOrderService cartBeforeOrderService;
@@ -30,17 +29,17 @@ public class OrderService {
 
     /*
         주문 절차
-        1. 주문자의 장바구니에 있는 상품들 구매할수 있는지 판단
-        2. 주문진행
-        3. 장바구니 비우기( 비동기로 처리하면 좋을듯 )
+        1. 도메인 객체 Cart생성, 장바구니에 있는 아이템들 담기
+        2. Cart에 있는 상품들 구매할수 있는지 판단
+        3. 주문하기
+        4. 장바구니 비우기( 비동기로 처리하면 좋을듯 )
      */
     public Long processOrder(OrderCreateDTO orderCreateDTO, UserInfo userInfo) {
         
         UserUtils.checkLogin(userInfo.getUserId());
 
-        // 도메인 객체
+        // 도메인 객체 생성, 장바구니에 있는 아이템들 담기
         Cart cart = new Cart();
-        // 장바구니에 있는 아이템들 도메인 객체에 담기
         cartService.setItemListInCart(userInfo.getUserId(), cart);
 
         // 구매할수 있는지 판단( 돈, 개수 )
@@ -50,8 +49,7 @@ public class OrderService {
         Long savedOrderId = createOrder(userInfo.getUserId(), orderCreateDTO.getAddress(), cart);
 
         // 장바구니 비우기
-        cartService.emptyCartAfterOrder(userInfo.getUserId());
-
+        cartService.emptyCartAfterOrder(userInfo.getUserId(), cart);
         return savedOrderId;
     }
 
@@ -62,13 +60,14 @@ public class OrderService {
     public void judgeBuyable(Long userId, Cart cart) {
 
         // 총 가격과 있는돈 비교하기
-        boolean buyablePrice = cartBeforeOrderService.buyablePrice(userId, cart);
+        cart.calculateTotalPrice();
+        boolean buyablePrice = cartBeforeOrderService.buyablePrice(userId, cart.getTotalPrice());
         if (! buyablePrice) {
             throw new ExpectedException(ErrorCode.DONT_BUY_MONEY);
         }
 
         // Item 개수 확인하기
-        String result = cartBeforeOrderService.buyableCount(userId, cart);
+        String result = cartBeforeOrderService.buyableCount(cart);
         if (! result.equals("ok")) {
             throw new ExpectedException(result);
         }

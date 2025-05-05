@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -34,15 +36,17 @@ public class ItemService {
     
     /*
         주문에따른, Item들 개수차감
-        구매 수량만큼 -해줘야함
-        id, count들 알아야함
+        구매 수량만큼 -
      */
-    @Transactional
-    public void itemCountDownByOrder(Map<Long, Integer> orderedItemCountMap) {
-        for (Long itemId : orderedItemCountMap.keySet()) {
+    public void itemCountDownByOrder(Map<Long, Integer> itemAndCountMap) {
+        List<Item> items = new ArrayList<>();
+
+        for (Long itemId : itemAndCountMap.keySet()) {
             Item item = itemRepository.findById(itemId).orElse(null);
-            item.minusCount(orderedItemCountMap.get(itemId));
-            itemRepository.save(item);
+            item.minusCount(itemAndCountMap.get(itemId));
+            items.add(item);
         }
+        itemRepository.saveAll(items);
+
     }
 }

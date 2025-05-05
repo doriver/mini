@@ -16,21 +16,15 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class CartBeforeOrderService {
 
-    private final CartReadService cartReadService;
     private final WalletReadService walletReadService;
 
     private final ItemRepository itemRepository;
 
-
-
-
     /*
         장바구니에 있는 Item들 총 가격, 구매자의 있는돈 비교하기
      */
-    public boolean buyablePrice(Long userId, Cart cart) {
+    public boolean buyablePrice(Long userId, long totalPrice) {
 
-        cart.calculateTotalPrice();
-        long totalPrice = cart.getTotalPrice();
         long money = walletReadService.selectMoney(userId);
 
         return money >= totalPrice;
@@ -40,7 +34,7 @@ public class CartBeforeOrderService {
         장바구니에 담긴 item과 실제 item 개수 비교
          1. 장바구니에 있는 아이템 가져오기   2. 거기의 개수와 item개수 비교하기
      */
-    public String buyableCount(Long userId, Cart cart) {
+    public String buyableCount(Cart cart) {
         List<ItemInCart> itemsInCart = cart.getItemsInCart();
 
         for (ItemInCart itemInCart : itemsInCart) {
