@@ -32,7 +32,6 @@ public class ShopLedgerHistory {
     @Column(columnDefinition = "TIMESTAMP")
     private LocalDateTime createdAt;
 
-    @Builder
     public ShopLedgerHistory(Long walletId, ShopTransaction shopTransaction, long amount, LocalDateTime createdAt) {
         this.walletId = walletId;
         this.shopTransaction = shopTransaction;

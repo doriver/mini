@@ -26,7 +26,6 @@ public class Delivery {
     @Column(columnDefinition = "TIMESTAMP")
     private LocalDateTime createdAt;
 
-    @Builder
     public Delivery(DeliveryStatus status, String address, LocalDateTime createdAt) {
         this.status = status;
         this.address = address;

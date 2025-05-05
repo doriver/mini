@@ -1,5 +1,7 @@
 package com.ex.mini.shop.application;
 
+import com.ex.mini.common.exception.ErrorCode;
+import com.ex.mini.common.exception.ExpectedException;
 import com.ex.mini.shop.domain.entity.ItemInCart;
 import com.ex.mini.shop.domain.entity.OrderItem;
 import com.ex.mini.shop.domain.repository.OrderItemRepository;
@@ -8,7 +10,9 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -20,17 +24,34 @@ public class OrderItemService {
 
     /*
         주문된 아이템 등록
+        아이템id, count 반환
      */
-    public void saveOrderItem(Long savedOrderId, Long userId) {
+    public Map<Long, Integer> saveOrderItem(Long savedOrderId, Long userId) {
         List<ItemInCart> itemsInCart = cartReadService.selectItemsInCart(userId);
-
         List<OrderItem> orderItems = cartIntoOrder(savedOrderId, itemsInCart);
 
-        // 여기 실패 경우에대한 처리 해줘야함
-        orderItemRepository.saveAll(orderItems);
+        try {
+            orderItemRepository.saveAll(orderItems);
+        } catch (Exception e) {
+            throw new ExpectedException(ErrorCode.FAIL_ORDER_ITEM);
+        }
+
+        return orderedItemCount(itemsInCart);
     }
 
-
+    public Map<Long, Integer> orderedItemCount(List<ItemInCart> itemsInCart) {
+        Map<Long, Integer> orderedItemCountMap = new HashMap<>();
+        for (ItemInCart itemInCart : itemsInCart) {
+            if (orderedItemCountMap.containsKey(itemInCart.getItemId())) {
+                orderedItemCountMap.put(
+                        itemInCart.getItemId()
+                        , orderedItemCountMap.get(itemInCart.getItemId()) + itemInCart.getCount());
+            } else {
+                orderedItemCountMap.put(itemInCart.getItemId(),itemInCart.getCount());
+            }
+        }
+        return orderedItemCountMap;
+    }
 
 
     /*
@@ -40,9 +61,7 @@ public class OrderItemService {
 
         List<OrderItem> orderItemList = new ArrayList<>();
         for (ItemInCart itemInCart : itemsInCart) {
-            OrderItem orderItem = OrderItem.builder()
-                    .orderId(orderId).itemId(itemInCart.getItemId()).count(itemInCart.getCount()).totalPrice(itemInCart.getTotalPrice()).createdAt(LocalDateTime.now())
-                    .build();
+            OrderItem orderItem = new OrderItem(orderId, itemInCart.getItemId(), itemInCart.getCount(), itemInCart.getTotalPrice(), LocalDateTime.now());
             orderItemList.add(orderItem);
         }
         return orderItemList;

@@ -7,7 +7,9 @@ import com.ex.mini.user.application.WalletReadService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -21,12 +23,20 @@ public class CartBeforeOrderService {
     /*
         장바구니에 있는 Item들 총 가격, 구매자의 있는돈 비교하기
      */
-    public boolean buyablePrice(Long userId) {
+    public Map<String, Object> buyablePrice(Long userId) {
 
         long totalPrice = cartReadService.calculatePriceInCart(userId);
         long money = walletReadService.selectMoney(userId);
 
-        return money >= totalPrice;
+        Map<String, Object> result = new HashMap<>();
+
+        if (money >= totalPrice) {
+            result.put("buyablePrice", true);
+            result.put("totalPrice", totalPrice);
+        } else {
+            result.put("buyablePrice", false);
+        }
+        return result;
     }
 
     /*

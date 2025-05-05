@@ -9,7 +9,7 @@ import org.springframework.http.HttpStatus;
 public enum ErrorCode {
 
     FAIL_ORDER(HttpStatus.INTERNAL_SERVER_ERROR, "주문에 실패했습니다.")
-    , FAIL_SAVE_ITEM(HttpStatus.INTERNAL_SERVER_ERROR, "아이템 등록에 실패했습니다.")
+    , FAIL_ORDER_ITEM(HttpStatus.INTERNAL_SERVER_ERROR, "아이템 주문에 실패했습니다.")
     , FAIL_SAVE_CART(HttpStatus.INTERNAL_SERVER_ERROR, "아이템을 장바구니에 담기 실패했습니다.")
     , FAIL_SAVE_DELIVERY(HttpStatus.INTERNAL_SERVER_ERROR, "배송정보 입력 실패했습니다.")
     , FAIL_TRANSACTION(HttpStatus.INTERNAL_SERVER_ERROR, "상품 결제에 실패했습니다.")

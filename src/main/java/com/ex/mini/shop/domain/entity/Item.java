@@ -1,5 +1,6 @@
 package com.ex.mini.shop.domain.entity;
 
+import com.ex.mini.common.exception.ExpectedException;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -22,17 +23,25 @@ public class Item {
 
     private String name;
 
-    private int price;
+    private long price;
 
-    private long count;
+    private int count;
 
     @Column(columnDefinition = "TIMESTAMP")
     private LocalDateTime createdAt;
 
-    public Item(String name, int price, long count, LocalDateTime createdAt) {
+    public Item(String name, long price, int count, LocalDateTime createdAt) {
         this.name = name;
         this.price = price;
         this.count = count;
         this.createdAt = createdAt;
+    }
+
+    public void minusCount(int mc) {
+        if (mc <= count) {
+            this.count = count - mc;
+        } else {
+            throw new ExpectedException(name + "의 개수가 부족합니다.");
+        }
     }
 }

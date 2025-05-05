@@ -1,0 +1,47 @@
+package com.ex.mini.shop.application;
+
+import com.ex.mini.common.exception.ErrorCode;
+import com.ex.mini.common.exception.ExpectedException;
+import com.ex.mini.shop.domain.entity.Order;
+import com.ex.mini.shop.domain.entity.OrderStatus;
+import com.ex.mini.shop.domain.repository.OrderRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
+import java.util.Map;
+
+@Service
+@RequiredArgsConstructor
+public class TransactionService {
+
+    private final OrderItemService orderItemService;
+    private final MoneyService moneyService;
+    private final ItemService itemService;
+
+    private final OrderRepository orderRepository;
+
+    @Transactional
+    public Long order(Long userId, Long deliveryId, Long totalPrice) {
+        // 주문 생성
+        Order order = new Order(userId, deliveryId, OrderStatus.ORDER, LocalDateTime.now());
+        Long savedOrderId = null;
+        try {
+            savedOrderId = orderRepository.save(order).getId();
+        } catch (Exception e) {
+            throw new ExpectedException(ErrorCode.FAIL_ORDER);
+        }
+
+        // OrderItem들 저장
+        Map<Long, Integer> orderedItemCountMap = orderItemService.saveOrderItem(savedOrderId, userId);
+
+        // Item들 개수 차감
+        itemService.itemCountDownByOrder(orderedItemCountMap);
+
+        // 구매자 돈 차감 , 마트 장부에 입금 처리
+        moneyService.moneyTransaction(userId, totalPrice);
+
+        return savedOrderId;
+    }
+}

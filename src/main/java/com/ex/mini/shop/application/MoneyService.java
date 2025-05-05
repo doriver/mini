@@ -20,27 +20,18 @@ public class MoneyService {
     private final WalletRepository walletRepository;
     private final ShopLedgerHistoryRepository shopLedgerHistoryRepository;
 
-    private final WalletReadService walletReadService;
-
-    private final CartReadService cartReadService;
-
-
-
     /*
         구매자 돈 차감 , 마트 장부에 입금 처리
-        1. 장바구니 총 비용
-        2. 구매자 지갑 조회해서, 차감하기
-        3. 마트 장부에 반영하기
+        1. 구매자 지갑 조회해서, 차감하기
+        2. 마트 장부에 반영하기
      */
-    public void moneyTransaction(Long userId) {
-        long totalPrice = calculatePriceInCart(userId);
+    public void moneyTransaction(Long userId, Long totalPrice) {
+
         Wallet wallet = walletRepository.findByUserId(userId)
                 .orElseThrow(() -> new ExpectedException(ErrorCode.WALLET_NOT_FOUND));
         wallet.minusMoney(totalPrice);
 
-        ShopLedgerHistory shopLedgerHistory = ShopLedgerHistory.builder()
-                .walletId(wallet.getId()).shopTransaction(ShopTransaction.PAY).amount(totalPrice).createdAt(LocalDateTime.now())
-                .build();
+        ShopLedgerHistory shopLedgerHistory = new ShopLedgerHistory(wallet.getId(), ShopTransaction.PAY, totalPrice, LocalDateTime.now());
 
         try {
             walletRepository.save(wallet);

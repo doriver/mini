@@ -13,19 +13,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
 public class OrderService {
 
-    private final OrderRepository orderRepository;
 
     private final DeliveryService deliveryService;
-    private final OrderItemService orderItemService;
-    private final MoneyService moneyService;
     private final CartService cartService;
-
     private final CartBeforeOrderService cartBeforeOrderService;
+    private final TransactionService transactionService;
 
     /*
         주문 절차
@@ -37,10 +35,10 @@ public class OrderService {
         UserUtils.checkLogin(userInfo.getUserId());
 
         // 구매할수 있는지 판단( 돈, 개수 )
-        judgeBuyable(userInfo.getUserId());
+        Long totalPrice = judgeBuyable(userInfo.getUserId());
 
         // 주문하기
-        Long savedOrderId = createOrder(userInfo.getUserId(), orderCreateDTO.getAddress());
+        Long savedOrderId = createOrder(userInfo.getUserId(), orderCreateDTO.getAddress(), totalPrice);
 
         // 장바구니 비우기
         cartService.emptyCartAfterOrder(userInfo.getUserId());
@@ -52,47 +50,34 @@ public class OrderService {
         주문자의 장바구니에 있는 상품들 구매할수 있는지 판단
         1. 돈    2. 상품 개수
      */
-    public void judgeBuyable(Long userId) {
+    public Long judgeBuyable(Long userId) {
 
         // 총 가격과 있는돈 비교하기
-        boolean buyablePrice = cartBeforeOrderService.buyablePrice(userId);
-        if (! buyablePrice) {
+        Map<String, Object> result01 = cartBeforeOrderService.buyablePrice(userId);
+        if (! (Boolean) result01.get("buyablePrice")) {
             throw new ExpectedException(ErrorCode.DONT_BUY_MONEY);
         }
 
         // Item 개수 확인하기
-        String result = cartBeforeOrderService.buyableCount(userId);
-        if (! result.equals("ok")) {
-            throw new ExpectedException(result);
+        String result02 = cartBeforeOrderService.buyableCount(userId);
+        if (! result02.equals("ok")) {
+            throw new ExpectedException(result02);
         }
+        return (Long) result01.get("totalPrice");
     }
 
 
     /*
         주문하기
-        작업의 단위를 생각해야함, 한꺼번에 묶을
-        1.배송정보 저장    2.Order생성    3.OrderItem들 저장     4.돈 결제
+        1.배송정보 저장    2.Order생성    3.OrderItem들 저장    4.Item들 개수 차감   5.돈 결제
      */
-    @Transactional
-    public Long createOrder(Long userId, String address) {
+    public Long createOrder(Long userId, String address, Long totalPrice) {
 
         // 배송정보 저장
         Long savedDeliveryId = deliveryService.saveDelivery(address);
 
-        // 주문 생성
-        Order order = Order.builder()
-                .userId(userId).deliveryId(savedDeliveryId).status(OrderStatus.ORDER).createdAt(LocalDateTime.now())
-                .build();
-        Long savedOrderId = orderRepository.save(order).getId();
-        if (savedOrderId == null) {
-            throw new ExpectedException(ErrorCode.FAIL_ORDER);
-        }
-
-        // 주문된 아이템들 등록
-        orderItemService.saveOrderItem(savedOrderId, userId);
-
-        // 구매자 돈 차감 , 마트 장부에 입금 처리
-        moneyService.moneyTransaction(userId);
+        // 2 ~ 5
+        Long savedOrderId = transactionService.order(userId, savedDeliveryId, totalPrice);
 
         return savedOrderId;
     }

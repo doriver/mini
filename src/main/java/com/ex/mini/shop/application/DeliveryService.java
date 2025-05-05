@@ -8,6 +8,8 @@ import com.ex.mini.shop.domain.repository.DeliveryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 @Service
 @RequiredArgsConstructor
 public class DeliveryService {
@@ -18,11 +20,11 @@ public class DeliveryService {
         배송정보 입력
      */
     public Long saveDelivery(String address) {
-        Delivery delivery = Delivery.builder()
-                .status(DeliveryStatus.PREPARING).address(address)
-                .build();
-        Long savedDeliveryId = deliveryRepository.save(delivery).getId();
-        if (savedDeliveryId == null) {
+        Delivery delivery = new Delivery(DeliveryStatus.PREPARING, address, LocalDateTime.now());
+        Long savedDeliveryId = null;
+        try {
+            savedDeliveryId = deliveryRepository.save(delivery).getId();
+        } catch (Exception e) {
             throw new ExpectedException(ErrorCode.FAIL_SAVE_DELIVERY);
         }
         return savedDeliveryId;

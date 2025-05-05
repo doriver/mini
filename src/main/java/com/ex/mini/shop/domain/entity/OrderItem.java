@@ -34,7 +34,6 @@ public class OrderItem {
     @Column(columnDefinition = "TIMESTAMP")
     private LocalDateTime createdAt;
 
-    @Builder
     public OrderItem(Long orderId, Long itemId, int count, long totalPrice, LocalDateTime createdAt) {
         this.orderId = orderId;
         this.itemId = itemId;

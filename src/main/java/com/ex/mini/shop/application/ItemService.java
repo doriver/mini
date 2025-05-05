@@ -7,8 +7,10 @@ import com.ex.mini.shop.domain.repository.ItemRepository;
 import com.ex.mini.shop.presentation.dto.request.ItemCreateDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -28,5 +30,19 @@ public class ItemService {
         Item item = new Item(itemCreateDTO.getName(), itemCreateDTO.getPrice(), itemCreateDTO.getCount(), LocalDateTime.now());
         Item savedItem = itemRepository.save(item);
         return savedItem.getId();
+    }
+    
+    /*
+        주문에따른, Item들 개수차감
+        구매 수량만큼 -해줘야함
+        id, count들 알아야함
+     */
+    @Transactional
+    public void itemCountDownByOrder(Map<Long, Integer> orderedItemCountMap) {
+        for (Long itemId : orderedItemCountMap.keySet()) {
+            Item item = itemRepository.findById(itemId).orElse(null);
+            item.minusCount(orderedItemCountMap.get(itemId));
+            itemRepository.save(item);
+        }
     }
 }
