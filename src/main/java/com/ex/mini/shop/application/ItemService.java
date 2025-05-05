@@ -1,6 +1,8 @@
 package com.ex.mini.shop.application;
 
 import com.ex.mini.common.argumentResolver.UserInfo;
+import com.ex.mini.common.exception.ErrorCode;
+import com.ex.mini.common.exception.ExpectedException;
 import com.ex.mini.common.utils.UserUtils;
 import com.ex.mini.shop.domain.entity.Item;
 import com.ex.mini.shop.domain.repository.ItemRepository;
@@ -42,11 +44,15 @@ public class ItemService {
         List<Item> items = new ArrayList<>();
 
         for (Long itemId : itemAndCountMap.keySet()) {
-            Item item = itemRepository.findById(itemId).orElse(null);
+            Item item = itemRepository.findById(itemId).orElse(null); // 앞쪽 judgeBuyable()에서 이미 검증됨
             item.minusCount(itemAndCountMap.get(itemId));
             items.add(item);
         }
-        itemRepository.saveAll(items);
+        try {
+            itemRepository.saveAll(items);
+        } catch (Exception e) {
+            throw new ExpectedException(ErrorCode.FAIL_ITEM_COUNT_DOWN_ORDER);
+        }
 
     }
 }
