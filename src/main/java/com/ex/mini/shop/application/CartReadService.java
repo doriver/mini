@@ -15,35 +15,5 @@ public class CartReadService {
 
     private final ItemInCartRepository itemInCartRepository;
 
-    /*
-        장바구니에 있는 아이템들 가져오기
-     */
-    public List<ItemInCart> selectItemsInCart(Long userId) {
-        List<ItemInCart> itemsInCart = itemInCartRepository.findAllByUserId(userId);
-
-        // findAllBy 결과값 확인해야함
-        if (itemsInCart.isEmpty()) {
-            throw new ExpectedException(ErrorCode.ZERO_CART);
-        }
-        return itemsInCart;
-    }
-
-
-    /*
-        장바구니에 있는 item들 총 가격 구하기
-     */
-    public long calculatePriceInCart(Long userId) {
-        List<ItemInCart> itemsInCart = selectItemsInCart(userId);
-        long totalPrice = 0;
-
-        for (ItemInCart itemInCart: itemsInCart) {
-            totalPrice += itemInCart.getTotalPrice();
-        }
-
-        return totalPrice;
-    }
-
-
-
 
 }

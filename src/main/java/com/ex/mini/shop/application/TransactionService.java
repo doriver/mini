@@ -2,6 +2,7 @@ package com.ex.mini.shop.application;
 
 import com.ex.mini.common.exception.ErrorCode;
 import com.ex.mini.common.exception.ExpectedException;
+import com.ex.mini.shop.domain.Cart;
 import com.ex.mini.shop.domain.entity.Order;
 import com.ex.mini.shop.domain.entity.OrderStatus;
 import com.ex.mini.shop.domain.repository.OrderRepository;
@@ -23,7 +24,7 @@ public class TransactionService {
     private final OrderRepository orderRepository;
 
     @Transactional
-    public Long order(Long userId, Long deliveryId, Long totalPrice) {
+    public Long order(Long userId, Long deliveryId, Cart cart) {
         // 주문 생성
         Order order = new Order(userId, deliveryId, OrderStatus.ORDER, LocalDateTime.now());
         Long savedOrderId = null;
@@ -34,13 +35,14 @@ public class TransactionService {
         }
 
         // OrderItem들 저장
-        Map<Long, Integer> orderedItemCountMap = orderItemService.saveOrderItem(savedOrderId, userId);
+        Map<Long, Integer> orderedItemCountMap = orderItemService.saveOrderItem(savedOrderId, cart.getItemsInCart());
 
         // Item들 개수 차감
-        itemService.itemCountDownByOrder(orderedItemCountMap);
+        cart.setItemAndCount();
+        itemService.itemCountDownByOrder(cart.getItemAndCountMap());
 
         // 구매자 돈 차감 , 마트 장부에 입금 처리
-        moneyService.moneyTransaction(userId, totalPrice);
+        moneyService.moneyTransaction(userId, cart.getTotalPrice());
 
         return savedOrderId;
     }

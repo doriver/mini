@@ -1,5 +1,6 @@
 package com.ex.mini.shop.application;
 
+import com.ex.mini.shop.domain.Cart;
 import com.ex.mini.shop.domain.entity.Item;
 import com.ex.mini.shop.domain.entity.ItemInCart;
 import com.ex.mini.shop.domain.repository.ItemRepository;
@@ -20,31 +21,27 @@ public class CartBeforeOrderService {
 
     private final ItemRepository itemRepository;
 
+
+
+
     /*
         장바구니에 있는 Item들 총 가격, 구매자의 있는돈 비교하기
      */
-    public Map<String, Object> buyablePrice(Long userId) {
+    public boolean buyablePrice(Long userId, Cart cart) {
 
-        long totalPrice = cartReadService.calculatePriceInCart(userId);
+        cart.calculateTotalPrice();
+        long totalPrice = cart.getTotalPrice();
         long money = walletReadService.selectMoney(userId);
 
-        Map<String, Object> result = new HashMap<>();
-
-        if (money >= totalPrice) {
-            result.put("buyablePrice", true);
-            result.put("totalPrice", totalPrice);
-        } else {
-            result.put("buyablePrice", false);
-        }
-        return result;
+        return money >= totalPrice;
     }
 
     /*
         장바구니에 담긴 item과 실제 item 개수 비교
          1. 장바구니에 있는 아이템 가져오기   2. 거기의 개수와 item개수 비교하기
      */
-    public String buyableCount(Long userId) {
-        List<ItemInCart> itemsInCart = cartReadService.selectItemsInCart(userId);
+    public String buyableCount(Long userId, Cart cart) {
+        List<ItemInCart> itemsInCart = cart.getItemsInCart();
 
         for (ItemInCart itemInCart : itemsInCart) {
             Item item = itemRepository.findById(itemInCart.getItemId()).orElse(null);

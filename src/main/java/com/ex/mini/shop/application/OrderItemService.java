@@ -26,8 +26,8 @@ public class OrderItemService {
         주문된 아이템 등록
         아이템id, count 반환
      */
-    public Map<Long, Integer> saveOrderItem(Long savedOrderId, Long userId) {
-        List<ItemInCart> itemsInCart = cartReadService.selectItemsInCart(userId);
+    public Map<Long, Integer> saveOrderItem(Long savedOrderId, List<ItemInCart> itemsInCart) {
+
         List<OrderItem> orderItems = cartIntoOrder(savedOrderId, itemsInCart);
 
         try {
@@ -36,22 +36,10 @@ public class OrderItemService {
             throw new ExpectedException(ErrorCode.FAIL_ORDER_ITEM);
         }
 
-        return orderedItemCount(itemsInCart);
+
     }
 
-    public Map<Long, Integer> orderedItemCount(List<ItemInCart> itemsInCart) {
-        Map<Long, Integer> orderedItemCountMap = new HashMap<>();
-        for (ItemInCart itemInCart : itemsInCart) {
-            if (orderedItemCountMap.containsKey(itemInCart.getItemId())) {
-                orderedItemCountMap.put(
-                        itemInCart.getItemId()
-                        , orderedItemCountMap.get(itemInCart.getItemId()) + itemInCart.getCount());
-            } else {
-                orderedItemCountMap.put(itemInCart.getItemId(),itemInCart.getCount());
-            }
-        }
-        return orderedItemCountMap;
-    }
+
 
 
     /*
