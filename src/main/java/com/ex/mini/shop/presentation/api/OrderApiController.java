@@ -2,7 +2,7 @@ package com.ex.mini.shop.presentation.api;
 
 import com.ex.mini.common.ApiResponse;
 import com.ex.mini.common.argumentResolver.UserInfo;
-import com.ex.mini.shop.application.CartService;
+import com.ex.mini.shop.application.OrderReadService;
 import com.ex.mini.shop.application.OrderService;
 import com.ex.mini.shop.presentation.dto.request.OrderCreateDTO;
 import com.ex.mini.shop.presentation.dto.response.OrderReadDTO;
@@ -17,6 +17,7 @@ import java.util.List;
 public class OrderApiController {
 
     private final OrderService orderService;
+    private final OrderReadService orderReadService;
 
     /*
         주문하기 API
@@ -29,12 +30,12 @@ public class OrderApiController {
 
     /*
         주문내역 조회 API
-        요청 데이터 : x
-        응답 데이터 : List<Order>
+        회원의 주문 목록
      */
     @GetMapping
     public ApiResponse<List<OrderReadDTO>> readOrders(UserInfo userInfo) {
-        
+        List<OrderReadDTO> orderList = orderReadService.readOrders(userInfo.getUserId());
+        return ApiResponse.success(orderList);
     }
 
 
