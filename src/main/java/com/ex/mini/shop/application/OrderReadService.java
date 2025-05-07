@@ -1,5 +1,7 @@
 package com.ex.mini.shop.application;
 
+import com.ex.mini.common.exception.ErrorCode;
+import com.ex.mini.common.exception.ExpectedException;
 import com.ex.mini.common.utils.DtoConvert;
 import com.ex.mini.common.utils.UserUtils;
 import com.ex.mini.shop.domain.entity.Order;
@@ -14,8 +16,12 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class OrderReadService {
+
     private final OrderRepository orderRepository;
 
+    /*
+        특정 사용자의 주문목록
+     */
     public List<OrderReadDTO> readOrders(Long userId) {
         UserUtils.checkLogin(userId);
 
@@ -24,8 +30,18 @@ public class OrderReadService {
         return orderList;
     }
 
-
+    /*
+        특정 사용자의 특정 주문상세
+     */
     public OrderDetailDTO readOrderDetail(Long userId, Long orderId) {
+        UserUtils.checkLogin(userId);
+
+        Order order = orderRepository.findByIdAndUserId(orderId, userId)
+                .orElseThrow(() -> new ExpectedException(ErrorCode.NOT_FOUND_ORDER));
+
+        order.getDeliveryId();
+        order.getStatus();
+        order.getCreatedAt();
 
     }
 }
