@@ -11,7 +11,7 @@ public class DtoConvert {
     public static List<OrderReadDTO> ordersToOrderReadDTOs(List<Order> orders) {
         List<OrderReadDTO> orderList = new ArrayList<>();
         for (Order order :orders) {
-            OrderReadDTO orderReadDTO = new OrderReadDTO(order.getStatus(), order.getCreatedAt());
+            OrderReadDTO orderReadDTO = new OrderReadDTO(order.getId(), order.getStatus(), order.getCreatedAt());
             orderList.add(orderReadDTO);
         }
         return orderList;
