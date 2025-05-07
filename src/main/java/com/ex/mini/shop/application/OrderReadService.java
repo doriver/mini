@@ -4,6 +4,7 @@ import com.ex.mini.common.utils.DtoConvert;
 import com.ex.mini.common.utils.UserUtils;
 import com.ex.mini.shop.domain.entity.Order;
 import com.ex.mini.shop.domain.repository.OrderRepository;
+import com.ex.mini.shop.presentation.dto.response.OrderDetailDTO;
 import com.ex.mini.shop.presentation.dto.response.OrderReadDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,5 +22,10 @@ public class OrderReadService {
         List<Order> orders = orderRepository.findAllByUserId(userId);
         List<OrderReadDTO> orderList = DtoConvert.ordersToOrderReadDTOs(orders);
         return orderList;
+    }
+
+
+    public OrderDetailDTO readOrderDetail(Long userId, Long orderId) {
+
     }
 }

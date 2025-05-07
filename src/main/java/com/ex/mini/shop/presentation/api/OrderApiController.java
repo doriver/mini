@@ -5,6 +5,7 @@ import com.ex.mini.common.argumentResolver.UserInfo;
 import com.ex.mini.shop.application.OrderReadService;
 import com.ex.mini.shop.application.OrderService;
 import com.ex.mini.shop.presentation.dto.request.OrderCreateDTO;
+import com.ex.mini.shop.presentation.dto.response.OrderDetailDTO;
 import com.ex.mini.shop.presentation.dto.response.OrderReadDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -42,4 +43,8 @@ public class OrderApiController {
     /*
         주문상세 조회 API
      */
+    @GetMapping("/{id}")
+    public ApiResponse<OrderDetailDTO> readOrderDetail(@PathVariable("id") Long orderId, UserInfo userInfo) {
+
+    }
 }
