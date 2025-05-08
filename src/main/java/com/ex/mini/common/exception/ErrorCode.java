@@ -17,6 +17,12 @@ public enum ErrorCode {
     , FAIL_EMPTY_CART(HttpStatus.INTERNAL_SERVER_ERROR, "장바구니 비우기에 실패했습니다.")
     , NOT_FOUND_ORDER(HttpStatus.BAD_REQUEST, "해당 주문은 존재하지 않습니다.")
 
+    // 주문 아이템
+    , NOT_FOUND_ORDERITEM(HttpStatus.INTERNAL_SERVER_ERROR, "주문아이템을 찾을수 없습니다.")
+
+    // 배송
+    , NOT_FOUND_DELIVERY(HttpStatus.INTERNAL_SERVER_ERROR, "배송정보를 찾을수 없습니다.")
+    
     // 장바구니
     , FAIL_SAVE_CART(HttpStatus.INTERNAL_SERVER_ERROR, "아이템을 장바구니에 담기 실패했습니다.")
     , ZERO_CART(HttpStatus.BAD_REQUEST, "장바구니가 비였습니다.")

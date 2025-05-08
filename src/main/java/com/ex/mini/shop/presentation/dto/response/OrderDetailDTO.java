@@ -10,12 +10,19 @@ import java.util.List;
 @Getter
 public class OrderDetailDTO {
 
+    // Order
     private OrderStatus orderStatus;
     private LocalDateTime createdAt;
+    
+    // OrderItem
     private List<OrderedItemDTO> orderedItems;
 
+    // Delivery
     private String address;
     private DeliveryStatus deliveryStatus;
 
+    // 그 외
     private String totalPrice;
+
+
 }
