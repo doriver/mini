@@ -42,7 +42,7 @@ public class OrderItemService {
 
         List<OrderItem> orderItemList = new ArrayList<>();
         for (ItemInCart itemInCart : itemsInCart) {
-            OrderItem orderItem = new OrderItem(orderId, itemInCart.getItemId(), itemInCart.getCount(), itemInCart.getTotalPrice(), LocalDateTime.now());
+            OrderItem orderItem = new OrderItem(orderId, itemInCart.getItemId(), itemInCart.getName(), itemInCart.getCount(), itemInCart.getTotalPrice(), LocalDateTime.now());
             orderItemList.add(orderItem);
         }
         return orderItemList;

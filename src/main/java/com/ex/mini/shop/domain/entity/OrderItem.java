@@ -36,9 +36,10 @@ public class OrderItem {
     @Column(columnDefinition = "TIMESTAMP")
     private LocalDateTime createdAt;
 
-    public OrderItem(Long orderId, Long itemId, int count, long totalPrice, LocalDateTime createdAt) {
+    public OrderItem(Long orderId, Long itemId, String name, int count, long totalPrice, LocalDateTime createdAt) {
         this.orderId = orderId;
         this.itemId = itemId;
+        this.name = name;
         this.count = count;
         this.totalPrice = totalPrice;
         this.createdAt = createdAt;
