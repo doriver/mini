@@ -22,7 +22,21 @@ public class OrderDetailDTO {
     private DeliveryStatus deliveryStatus;
 
     // 그 외
-    private String totalPrice;
+    private long totalPrice;
 
+    public OrderDetailDTO(OrderStatus orderStatus, LocalDateTime createdAt, List<OrderedItemDTO> orderedItems, String address, DeliveryStatus deliveryStatus) {
+        this.orderStatus = orderStatus;
+        this.createdAt = createdAt;
+        this.orderedItems = orderedItems;
+        this.address = address;
+        this.deliveryStatus = deliveryStatus;
+    }
+
+    public void calculateAndSetTotalPrice() {
+        totalPrice = 0;
+        for (OrderedItemDTO orderedItemDTO :orderedItems) {
+            totalPrice += orderedItemDTO.getTotalPrice();
+        }
+    }
 
 }

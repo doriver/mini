@@ -12,9 +12,12 @@ import com.ex.mini.shop.domain.repository.OrderItemRepository;
 import com.ex.mini.shop.domain.repository.OrderRepository;
 import com.ex.mini.shop.presentation.dto.response.OrderDetailDTO;
 import com.ex.mini.shop.presentation.dto.response.OrderReadDTO;
+import com.ex.mini.shop.presentation.dto.response.OrderedItemDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -39,23 +42,28 @@ public class OrderReadService {
     /*
         특정 사용자의 특정 주문상세
      */
+//    @Transactional(readOnly = true)
     public OrderDetailDTO readOrderDetail(Long userId, Long orderId) {
         UserUtils.checkLogin(userId);
 
+        // Order
         Order order = orderRepository.findByIdAndUserId(orderId, userId)
                 .orElseThrow(() -> new ExpectedException(ErrorCode.NOT_FOUND_ORDER));
 
-
-        order.getStatus();
-        order.getCreatedAt();
-
-        List<OrderItem> OrderItemList = orderItemRepository.findAllByOrderId(orderId);
-        if (OrderItemList.isEmpty()) {
+        // OrderItem
+        List<OrderItem> orderItems = orderItemRepository.findAllByOrderId(orderId);
+        if (orderItems.isEmpty()) {
             throw new ExpectedException(ErrorCode.NOT_FOUND_ORDERITEM);
         }
+        List<OrderedItemDTO> orderedItemList = DtoConvert.orderItemsToDTOs(orderItems);
 
+        // Delivery
         Delivery delivery = deliveryRepository.findById(order.getDeliveryId())
                 .orElseThrow(() -> new ExpectedException(ErrorCode.NOT_FOUND_DELIVERY));
 
+        // DTO
+        OrderDetailDTO orderDetailDTO = new OrderDetailDTO(order.getStatus(), order.getCreatedAt(), orderedItemList, delivery.getAddress(), delivery.getStatus());
+        orderDetailDTO.calculateAndSetTotalPrice();
+        return orderDetailDTO;
     }
 }

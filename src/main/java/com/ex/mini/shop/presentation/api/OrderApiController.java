@@ -42,9 +42,11 @@ public class OrderApiController {
 
     /*
         주문상세 조회 API
+        Order, OrderItem, Delivery, 이 외 정보
      */
     @GetMapping("/{id}")
     public ApiResponse<OrderDetailDTO> readOrderDetail(@PathVariable("id") Long orderId, UserInfo userInfo) {
-
+        OrderDetailDTO orderDetailDTO = orderReadService.readOrderDetail(userInfo.getUserId(), orderId);
+        return ApiResponse.success(orderDetailDTO);
     }
 }
