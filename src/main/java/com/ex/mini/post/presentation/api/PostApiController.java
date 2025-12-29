@@ -3,6 +3,7 @@ package com.ex.mini.post.presentation.api;
 import com.ex.mini.post.application.PostService;
 import com.ex.mini.post.presentation.dto.request.PostCreateDTO;
 import com.ex.mini.post.presentation.dto.request.PostEditDTO;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +22,7 @@ public class PostApiController {
         글 작성 api
         글 작성화면 - 등록하기 버튼
      */
+    @Operation(summary = "게시글 작성", description = "설명을 뭐라고 하지?")
     @PostMapping
     public Map<String,Object> createPost(@RequestBody PostCreateDTO postCreateDTO, HttpSession session) {
         Long userId = (Long) session.getAttribute("userId"); // 현재 요청한 사용자

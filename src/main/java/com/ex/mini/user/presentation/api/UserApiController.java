@@ -2,6 +2,7 @@ package com.ex.mini.user.presentation.api;
 
 import com.ex.mini.user.application.UserSignService;
 import com.ex.mini.user.domain.entity.User;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,7 @@ public class UserApiController {
         매개변수 : nickname , role
         리턴 : 성공, 실패
      */
+    @Operation(summary = "회원가입")
     @PostMapping("/sign-up")
     public String signUp(@RequestParam("nickname") String nickname, @RequestParam("role") String role) {
         return userSignService.registerUser(nickname, role);
@@ -28,6 +30,7 @@ public class UserApiController {
         매개변수 : nickname
         리턴 : 성공, 실패
      */
+    @Operation(summary = "로그인")
     @PostMapping("/sign-in")
     public String signIn(@RequestParam("nickname") String nickname, HttpSession session) {
         User user = userSignService.authenticateUser(nickname);
