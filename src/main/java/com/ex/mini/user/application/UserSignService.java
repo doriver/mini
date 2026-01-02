@@ -6,13 +6,28 @@ import com.ex.mini.user.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class UserSignService {
 
     private final UserRepository userRepository;
 
-    public String registerUser(String nickname, String role) {
+    /*
+        성공시, 저장된 userId값
+        실패시, 실패메시지
+     */
+    public Map<String,Object> registerUser(String nickname, String role) {
+        Map<String,Object> result = new HashMap<>();
+        Optional<User> optionalUser = userRepository.findByNickname(nickname);
+        if (optionalUser.isPresent()) {
+            result.put("fail", "이미 존재하는 닉네임 입니다");
+            return result;
+        }
+
         Role userRole = null;
 
         if (role.equals("user")) {
@@ -28,14 +43,7 @@ public class UserSignService {
                 .build();
         User savedUser = userRepository.save(user);
 
-        String result = null;
-
-        if (savedUser.getId() != null) {
-            result = "success";
-        } else {
-            result = "fail";
-        }
-
+        result.put("success", savedUser.getId());
         return result;
     }
 

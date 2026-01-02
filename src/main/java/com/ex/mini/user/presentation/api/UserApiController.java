@@ -1,5 +1,8 @@
 package com.ex.mini.user.presentation.api;
 
+import com.ex.mini.common.ApiResponse;
+import com.ex.mini.common.exception.ErrorCode;
+import com.ex.mini.common.exception.ExpectedException;
 import com.ex.mini.user.application.UserSignService;
 import com.ex.mini.user.domain.entity.User;
 import io.swagger.v3.oas.annotations.Operation;
@@ -7,6 +10,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/user")
@@ -17,12 +22,24 @@ public class UserApiController {
     /*
         회원가입
         매개변수 : nickname , role
-        리턴 : 성공, 실패
+        리턴 : 성공여부
      */
     @Operation(summary = "회원가입")
     @PostMapping("/sign-up")
-    public String signUp(@RequestParam("nickname") String nickname, @RequestParam("role") String role) {
-        return userSignService.registerUser(nickname, role);
+    public ApiResponse signUp(@RequestParam("nickname") String nickname, @RequestParam("role") String role) {
+        Map<String,Object> result = userSignService.registerUser(nickname, role);
+
+        if (result.get("fail") != null) {
+            return ApiResponse.fail(
+                    (String)(result.get("fail"))
+            );
+        }
+
+        if (result.get("success") == null) {
+            throw new ExpectedException(ErrorCode.FAIL_SIGN_UP);
+        }
+
+        return ApiResponse.success();
     }
 
     /*
