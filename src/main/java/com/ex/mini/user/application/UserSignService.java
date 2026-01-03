@@ -24,7 +24,7 @@ public class UserSignService {
         Map<String,Object> result = new HashMap<>();
         Optional<User> optionalUser = userRepository.findByNickname(nickname);
         if (optionalUser.isPresent()) {
-            result.put("fail", "이미 존재하는 닉네임 입니다");
+            result.put("failMessage", "이미 존재하는 닉네임 입니다");
             return result;
         }
 
@@ -43,7 +43,7 @@ public class UserSignService {
                 .build();
         User savedUser = userRepository.save(user);
 
-        result.put("success", savedUser.getId());
+        result.put("successValue", savedUser.getId());
         return result;
     }
 

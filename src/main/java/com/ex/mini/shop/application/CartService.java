@@ -1,7 +1,7 @@
 package com.ex.mini.shop.application;
 
 import com.ex.mini.common.exception.ErrorCode;
-import com.ex.mini.common.exception.ExpectedException;
+import com.ex.mini.common.exception.Expected4xxException;
 import com.ex.mini.common.utils.MoneyCalculation;
 import com.ex.mini.common.utils.UserUtils;
 import com.ex.mini.shop.domain.Cart;
@@ -35,7 +35,7 @@ public class CartService {
         // Item조회
         Long itemId = itemInCartCreateDTO.getItemId();
         Item item = itemRepository.findById(itemId)
-                .orElseThrow(() -> new ExpectedException(ErrorCode.ITEM_NOT_FOUND));
+                .orElseThrow(() -> new Expected4xxException(ErrorCode.ITEM_NOT_FOUND));
 
         int itemCount = itemInCartCreateDTO.getCount();
         long totalPrice = MoneyCalculation.priceCount(item.getPrice(), itemCount);
@@ -65,7 +65,7 @@ public class CartService {
 
         // findAllBy 결과값 확인해야함
         if (itemsInCart.isEmpty()) {
-            throw new ExpectedException(ErrorCode.ZERO_CART);
+            throw new Expected4xxException(ErrorCode.ZERO_CART);
         }
         return itemsInCart;
     }

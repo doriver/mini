@@ -2,7 +2,8 @@ package com.ex.mini.user.presentation.api;
 
 import com.ex.mini.common.ApiResponse;
 import com.ex.mini.common.exception.ErrorCode;
-import com.ex.mini.common.exception.ExpectedException;
+import com.ex.mini.common.exception.Expected4xxException;
+import com.ex.mini.common.exception.Expected5xxException;
 import com.ex.mini.user.application.UserSignService;
 import com.ex.mini.user.domain.entity.User;
 import io.swagger.v3.oas.annotations.Operation;
@@ -29,14 +30,13 @@ public class UserApiController {
     public ApiResponse signUp(@RequestParam("nickname") String nickname, @RequestParam("role") String role) {
         Map<String,Object> result = userSignService.registerUser(nickname, role);
 
-        if (result.get("fail") != null) {
-            return ApiResponse.fail(
-                    (String)(result.get("fail"))
-            );
+        if (result.get("failMessage") != null) {
+            throw new Expected4xxException(
+                    (String)(result.get("failMessage")));
         }
 
-        if (result.get("success") == null) {
-            throw new ExpectedException(ErrorCode.FAIL_SIGN_UP);
+        if (result.get("successValue") == null) {
+            throw new Expected5xxException("회원가입에 실패했습니다.");
         }
 
         return ApiResponse.success();

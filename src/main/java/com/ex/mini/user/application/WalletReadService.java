@@ -1,7 +1,7 @@
 package com.ex.mini.user.application;
 
 import com.ex.mini.common.exception.ErrorCode;
-import com.ex.mini.common.exception.ExpectedException;
+import com.ex.mini.common.exception.Expected4xxException;
 import com.ex.mini.user.domain.entity.Wallet;
 import com.ex.mini.user.domain.repository.WalletRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +17,7 @@ public class WalletReadService {
      */
     public long selectMoney(Long userId) {
         Wallet wallet = walletRepository.findByUserId(userId)
-                .orElseThrow(() -> new ExpectedException(ErrorCode.WALLET_NOT_FOUND));
+                .orElseThrow(() -> new Expected4xxException(ErrorCode.WALLET_NOT_FOUND));
 
         return wallet.getMoney();
     }

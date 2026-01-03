@@ -2,21 +2,12 @@ package com.ex.mini.shop.application;
 
 import com.ex.mini.common.argumentResolver.UserInfo;
 import com.ex.mini.common.exception.ErrorCode;
-import com.ex.mini.common.exception.ExpectedException;
+import com.ex.mini.common.exception.Expected4xxException;
 import com.ex.mini.common.utils.UserUtils;
 import com.ex.mini.shop.domain.Cart;
-import com.ex.mini.shop.domain.entity.ItemInCart;
-import com.ex.mini.shop.domain.entity.Order;
-import com.ex.mini.shop.domain.entity.OrderStatus;
-import com.ex.mini.shop.domain.repository.OrderRepository;
 import com.ex.mini.shop.presentation.dto.request.OrderCreateDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -63,13 +54,13 @@ public class OrderService {
         cart.calculateTotalPrice();
         boolean buyablePrice = cartBeforeOrderService.buyablePrice(userId, cart.getTotalPrice());
         if (! buyablePrice) {
-            throw new ExpectedException(ErrorCode.DONT_BUY_MONEY);
+            throw new Expected4xxException(ErrorCode.DONT_BUY_MONEY);
         }
 
         // Item 개수 확인하기
         String result = cartBeforeOrderService.buyableCount(cart);
         if (! result.equals("ok")) {
-            throw new ExpectedException(result);
+            throw new Expected4xxException(result);
         }
     }
 

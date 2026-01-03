@@ -1,9 +1,8 @@
 package com.ex.mini.shop.domain.entity;
 
-import com.ex.mini.common.exception.ExpectedException;
+import com.ex.mini.common.exception.Expected4xxException;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -41,7 +40,7 @@ public class Item {
         if (mc <= count) {
             this.count = count - mc;
         } else {
-            throw new ExpectedException(name + "의 개수가 부족합니다.");
+            throw new Expected4xxException(name + "의 개수가 부족합니다.");
         }
     }
 }

@@ -2,14 +2,13 @@ package com.ex.mini.shop.application;
 
 import com.ex.mini.common.argumentResolver.UserInfo;
 import com.ex.mini.common.exception.ErrorCode;
-import com.ex.mini.common.exception.ExpectedException;
+import com.ex.mini.common.exception.Expected4xxException;
 import com.ex.mini.common.utils.UserUtils;
 import com.ex.mini.shop.domain.entity.Item;
 import com.ex.mini.shop.domain.repository.ItemRepository;
 import com.ex.mini.shop.presentation.dto.request.ItemCreateDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -51,7 +50,7 @@ public class ItemService {
         try {
             itemRepository.saveAll(items);
         } catch (Exception e) {
-            throw new ExpectedException(ErrorCode.FAIL_ITEM_COUNT_DOWN_ORDER);
+            throw new Expected4xxException(ErrorCode.FAIL_ITEM_COUNT_DOWN_ORDER);
         }
 
     }

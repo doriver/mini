@@ -3,7 +3,10 @@ package com.ex.mini.common.exception;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-
+/*
+    자주사용되는 ExpectedException들 정리및 관리
+    현재있는 List들은 정리 필요
+ */
 @Getter
 @RequiredArgsConstructor
 public enum ErrorCode {
@@ -38,7 +41,6 @@ public enum ErrorCode {
     , NOT_ENOUGH_MONEY(HttpStatus.BAD_REQUEST, "보유하신 금액이 부족합니다.")
 
     // 유저
-    , FAIL_SIGN_UP(HttpStatus.INTERNAL_SERVER_ERROR, "회원가입에 실패했습니다.")
     , NEED_TO_LOGIN(HttpStatus.BAD_REQUEST, "로그인이 필요합니다.")
     , DONT_HAVE_AUTHORITY(HttpStatus.BAD_REQUEST, "해당 서비스를 이용할 권한이 없습니다.")
 

@@ -1,7 +1,7 @@
 package com.ex.mini.shop.application;
 
 import com.ex.mini.common.exception.ErrorCode;
-import com.ex.mini.common.exception.ExpectedException;
+import com.ex.mini.common.exception.Expected4xxException;
 import com.ex.mini.shop.domain.entity.ItemInCart;
 import com.ex.mini.shop.domain.entity.OrderItem;
 import com.ex.mini.shop.domain.repository.OrderItemRepository;
@@ -10,9 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -30,7 +28,7 @@ public class OrderItemService {
         try {
             orderItemRepository.saveAll(orderItems);
         } catch (Exception e) {
-            throw new ExpectedException(ErrorCode.FAIL_ORDER_ITEM);
+            throw new Expected4xxException(ErrorCode.FAIL_ORDER_ITEM);
         }
     }
 

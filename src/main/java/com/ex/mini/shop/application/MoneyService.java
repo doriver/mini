@@ -1,11 +1,10 @@
 package com.ex.mini.shop.application;
 
 import com.ex.mini.common.exception.ErrorCode;
-import com.ex.mini.common.exception.ExpectedException;
+import com.ex.mini.common.exception.Expected4xxException;
 import com.ex.mini.shop.domain.entity.ShopLedgerHistory;
 import com.ex.mini.shop.domain.entity.ShopTransaction;
 import com.ex.mini.shop.domain.repository.ShopLedgerHistoryRepository;
-import com.ex.mini.user.application.WalletReadService;
 import com.ex.mini.user.domain.entity.Wallet;
 import com.ex.mini.user.domain.repository.WalletRepository;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +27,7 @@ public class MoneyService {
     public void moneyTransaction(Long userId, Long totalPrice) {
 
         Wallet wallet = walletRepository.findByUserId(userId)
-                .orElseThrow(() -> new ExpectedException(ErrorCode.WALLET_NOT_FOUND));
+                .orElseThrow(() -> new Expected4xxException(ErrorCode.WALLET_NOT_FOUND));
         wallet.minusMoney(totalPrice);
 
         ShopLedgerHistory shopLedgerHistory = new ShopLedgerHistory(wallet.getId(), ShopTransaction.PAY, totalPrice, LocalDateTime.now());
@@ -37,7 +36,7 @@ public class MoneyService {
             walletRepository.save(wallet);
             shopLedgerHistoryRepository.save(shopLedgerHistory);
         } catch (Exception e) {
-            throw new ExpectedException(ErrorCode.FAIL_TRANSACTION);
+            throw new Expected4xxException(ErrorCode.FAIL_TRANSACTION);
         }
     }
 

@@ -1,7 +1,7 @@
 package com.ex.mini.shop.application;
 
 import com.ex.mini.common.exception.ErrorCode;
-import com.ex.mini.common.exception.ExpectedException;
+import com.ex.mini.common.exception.Expected4xxException;
 import com.ex.mini.shop.domain.entity.Delivery;
 import com.ex.mini.shop.domain.entity.DeliveryStatus;
 import com.ex.mini.shop.domain.repository.DeliveryRepository;
@@ -25,7 +25,7 @@ public class DeliveryService {
         try {
             savedDeliveryId = deliveryRepository.save(delivery).getId();
         } catch (Exception e) {
-            throw new ExpectedException(ErrorCode.FAIL_SAVE_DELIVERY);
+            throw new Expected4xxException(ErrorCode.FAIL_SAVE_DELIVERY);
         }
         return savedDeliveryId;
     }

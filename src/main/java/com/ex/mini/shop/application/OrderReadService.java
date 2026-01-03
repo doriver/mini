@@ -1,7 +1,7 @@
 package com.ex.mini.shop.application;
 
 import com.ex.mini.common.exception.ErrorCode;
-import com.ex.mini.common.exception.ExpectedException;
+import com.ex.mini.common.exception.Expected4xxException;
 import com.ex.mini.common.utils.DtoConvert;
 import com.ex.mini.common.utils.UserUtils;
 import com.ex.mini.shop.domain.entity.Delivery;
@@ -15,9 +15,7 @@ import com.ex.mini.shop.presentation.dto.response.OrderReadDTO;
 import com.ex.mini.shop.presentation.dto.response.OrderedItemDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -48,18 +46,18 @@ public class OrderReadService {
 
         // Order
         Order order = orderRepository.findByIdAndUserId(orderId, userId)
-                .orElseThrow(() -> new ExpectedException(ErrorCode.NOT_FOUND_ORDER));
+                .orElseThrow(() -> new Expected4xxException(ErrorCode.NOT_FOUND_ORDER));
 
         // OrderItem
         List<OrderItem> orderItems = orderItemRepository.findAllByOrderId(orderId);
         if (orderItems.isEmpty()) {
-            throw new ExpectedException(ErrorCode.NOT_FOUND_ORDERITEM);
+            throw new Expected4xxException(ErrorCode.NOT_FOUND_ORDERITEM);
         }
         List<OrderedItemDTO> orderedItemList = DtoConvert.orderItemsToDTOs(orderItems);
 
         // Delivery
         Delivery delivery = deliveryRepository.findById(order.getDeliveryId())
-                .orElseThrow(() -> new ExpectedException(ErrorCode.NOT_FOUND_DELIVERY));
+                .orElseThrow(() -> new Expected4xxException(ErrorCode.NOT_FOUND_DELIVERY));
 
         // DTO
         OrderDetailDTO orderDetailDTO = new OrderDetailDTO(order.getStatus(), order.getCreatedAt(), orderedItemList, delivery.getAddress(), delivery.getStatus());

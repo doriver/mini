@@ -1,7 +1,7 @@
 package com.ex.mini.shop.application;
 
 import com.ex.mini.common.exception.ErrorCode;
-import com.ex.mini.common.exception.ExpectedException;
+import com.ex.mini.common.exception.Expected4xxException;
 import com.ex.mini.shop.domain.Cart;
 import com.ex.mini.shop.domain.entity.Order;
 import com.ex.mini.shop.domain.entity.OrderStatus;
@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -31,7 +30,7 @@ public class TransactionService {
         try {
             savedOrderId = orderRepository.save(order).getId();
         } catch (Exception e) {
-            throw new ExpectedException(ErrorCode.FAIL_ORDER);
+            throw new Expected4xxException(ErrorCode.FAIL_ORDER);
         }
 
         // OrderItem들 저장
