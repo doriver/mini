@@ -1,11 +1,10 @@
-package com.ex.mini;
+package com.ex.mini.xx;
 
 import com.ex.mini.common.exception.ErrorCode;
 import com.ex.mini.common.exception.Expected4xxException;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/test")
@@ -20,9 +19,13 @@ public class TestController {
         return "hello";
     }
 
-    @RequestMapping("/v12")
-    public String ab() {
-        return "post/test";
+    @ResponseBody
+    @PostMapping("/v12")
+    public String ab(@Valid @RequestBody ValidationDTO dto) {
+        System.out.println(dto.getAge());
+        System.out.println(dto.getName());
+        System.out.println(dto.getEmail());
+        return "데이터 잘 담겼어야함"; // 통과
     }
 
 }
