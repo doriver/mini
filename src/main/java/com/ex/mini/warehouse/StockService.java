@@ -16,8 +16,8 @@ public class StockService {
     // 재고 감소 로직 구현
     @Transactional
     public void decrease(Long id, Long quantity) {
-        // Stock 조회
-        Optional<Stock> stock = stockRepository.findById(id);
+        // 락을 걸고 재고 데이터를 가져온다
+        Optional<Stock> stock = stockRepository.findByIdWithPessimisticLock(id);
 
         // 재고 감소
         stock.orElseThrow(() -> new RuntimeException("해당하는 재고가 없습니다."))
